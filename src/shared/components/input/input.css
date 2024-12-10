@@ -1,0 +1,32 @@
+.textInput-container {
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.textInput-label {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.textInput-input {
+  border: 2px solid #f0f0f0;
+  border-radius: 4px;
+  display: block;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 10px;
+  width: auto;
+  margin: 5px 0px;
+}
+
+.textInput-description {
+  font-size: 12px;
+  color: #555;
+}
+
+.textInput-error {
+  color: red;
+  font-size: 12px;
+}
