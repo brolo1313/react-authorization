@@ -1,32 +1,73 @@
 .textInput-container {
   position: relative;
-  margin-top: 10px;
-  margin-bottom: 15px;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .textInput-label {
-  display: inline-block;
-  font-size: 18px;
-  font-weight: bold;
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #888;
+  margin-bottom: 0.5rem;
 }
 
 .textInput-input {
-  border: 2px solid #f0f0f0;
-  border-radius: 4px;
-  display: block;
-  font-family: inherit;
-  font-size: 14px;
-  padding: 10px;
-  width: auto;
-  margin: 5px 0px;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  background-color: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  transition: all 0.2s ease;
+  outline: none;
+  box-sizing: border-box;
 }
 
-.textInput-description {
-  font-size: 12px;
-  color: #555;
+.textInput-input:focus {
+  border-color: #646cff;
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
+}
+
+.textInput-input::placeholder {
+  color: #666;
+}
+
+.textInput-input.error {
+  border-color: #ff4646;
 }
 
 .textInput-error {
-  color: red;
-  font-size: 12px;
+  color: #ff4646;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+/* Стилі для password input */
+.textInput-container .password-toggle {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+}
+
+.textInput-container .password-toggle:hover {
+  color: #646cff;
+}
+
+/* Анімація для error state */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.textInput-input.error {
+  animation: shake 0.2s ease-in-out;
 }

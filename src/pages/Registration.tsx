@@ -97,15 +97,15 @@ const Registration = () => {
   const handleChange = (e: any) => {
     let passwordError = "";
 
-    if (e.target.id === "password" && password.length < 7) {
-      passwordError = "Password is too short";
-    }
+    // if (e.target.id === "password" && password.length < 7) {
+    //   passwordError = "Password is too short";
+    // }
 
-    setFormState({
-      ...formState,
-      [e.target.id]: e.target.value,
-      passwordLength: passwordError, //In here it display the error
-    });
+    // setFormState({
+    //   ...formState,
+    //   [e.target.id]: e.target.value,
+    //   passwordLength: passwordError, //In here it display the error
+    // });
   };
 
   const onSubmit = async (e: any) => {
@@ -171,7 +171,7 @@ const Registration = () => {
           onClick={onSubmit}
           disabled={!formState.email}
         >
-          {loading ? `loading...` : `save`}
+          {loading ? `Loading...` : `Sign Up`}
         </button>
 
         {accountCreationSuccessful && !loading ? (

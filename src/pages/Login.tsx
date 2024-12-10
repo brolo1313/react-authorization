@@ -9,7 +9,7 @@ const Login = () => {
   const [name, setName] = useState("");
   const [errorNameMessage, setErrorNameMessage] = useState<string>("");
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (e: any) => {
   };
@@ -48,7 +48,7 @@ const Login = () => {
           onClick={onSubmit}
           disabled={!email && !name}
         >
-          {loading ? `loading...` : `save`}
+          {loading ? `loading...` : `Sing in`}
         </button>
 
         <Link to="/reset-password">Go to Reset Pass</Link>
