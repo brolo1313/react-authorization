@@ -19,7 +19,6 @@ const ResetPassword = () => {
     <div className="page-container">
       <div className="form-container">
         <h2>Reset Password Page</h2>
-        <p>Welcome to the Reset Password page</p>
         <TextInput
           type="text"
           value={email}

@@ -94,18 +94,21 @@ const Registration = () => {
     // );
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let passwordError = "";
 
     // if (e.target.id === "password" && password.length < 7) {
     //   passwordError = "Password is too short";
     // }
 
-    // setFormState({
-    //   ...formState,
-    //   [e.target.id]: e.target.value,
-    //   passwordLength: passwordError, //In here it display the error
-    // });
+    console.log("e.target id", e.target.id);
+    console.log("e.target value", e.target.value);
+
+    setFormState({
+      ...formState,
+      [e.target?.id]: e.target?.value,
+      passwordLength: passwordError, //In here it display the error
+    });
   };
 
   const onSubmit = async (e: any) => {
@@ -136,6 +139,7 @@ const Registration = () => {
   return (
     <div className="page-container">
       <div className="form-container">
+        <h2>Registration Page</h2>
         <TextInput
           type="text"
           value={email}
@@ -151,9 +155,9 @@ const Registration = () => {
           onChange={handleChange}
           id="password"
           required
-          label="password"
+          label="Password"
           isPassword
-          error={passwordLength} //Password lenght error
+          error={passwordLength}
         />
         <TextInput
           type="password"

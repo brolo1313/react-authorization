@@ -3,7 +3,7 @@ import "./input.css";
 
 export interface Props {
   value: string;
-  onChange: (e: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   id?: string;
   type?: "text" | "number" | "password" | "email";
@@ -37,7 +37,7 @@ export const TextInput = memo(
         </label>
         <input
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => onChange(e)}
           id={id}
           type={type}
           className="textInput-input"
