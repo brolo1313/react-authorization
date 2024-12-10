@@ -134,51 +134,53 @@ const Registration = () => {
   };
 
   return (
-    <>
-      <TextInput
-        type="text"
-        value={email}
-        onChange={handleChange}
-        id="email"
-        label="Email"
-        required
-        error={errorEmailMessage}
-      />
-      <TextInput
-        type="password"
-        value={password}
-        onChange={handleChange}
-        id="password"
-        required
-        label="password"
-        isPassword
-        error={passwordLength} //Password lenght error
-      />
-      <TextInput
-        type="password"
-        value={passwordConfirmation}
-        onChange={handleChange}
-        id="passwordConfirmation"
-        required
-        label="Confirm password"
-        isPassword
-        error={errorPasswordMessage}
-      />
-      <button
-        type="submit"
-        name="action"
-        onClick={onSubmit}
-        disabled={!formState.email}
-      >
-        {loading ? `loading...` : `save`}
-      </button>
+    <div className="page-container">
+      <div className="form-container">
+        <TextInput
+          type="text"
+          value={email}
+          onChange={handleChange}
+          id="email"
+          label="Email"
+          required
+          error={errorEmailMessage}
+        />
+        <TextInput
+          type="password"
+          value={password}
+          onChange={handleChange}
+          id="password"
+          required
+          label="password"
+          isPassword
+          error={passwordLength} //Password lenght error
+        />
+        <TextInput
+          type="password"
+          value={passwordConfirmation}
+          onChange={handleChange}
+          id="passwordConfirmation"
+          required
+          label="Confirm password"
+          isPassword
+          error={errorPasswordMessage}
+        />
+        <button
+          type="submit"
+          name="action"
+          onClick={onSubmit}
+          disabled={!formState.email}
+        >
+          {loading ? `loading...` : `save`}
+        </button>
 
-      {accountCreationSuccessful && !loading ? (
-        <p>You have succefully create and account 👏🏾</p>
-      ) : null}
+        {accountCreationSuccessful && !loading ? (
+          <p>You have succefully create and account 👏🏾</p>
+        ) : null}
 
-      <Link to="/login">Go to Registration</Link>
-    </>
+        <Link to="/login">Go to Registration</Link>
+      </div>
+    </div>
   );
 };
 
