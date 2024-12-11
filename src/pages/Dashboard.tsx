@@ -6,6 +6,7 @@ function Dashboard() {
   const [isLoading, setIsLoadingState] = useState<boolean>(false);
 
   const apiUrl = import.meta.env.VITE_API_URL;
+  
   useEffect(() => {
     getUsers();
   }, []);
@@ -26,7 +27,7 @@ function Dashboard() {
 
     try {
       const response = await fetch(
-        apiUrl,
+        `${apiUrl}/all-profiles`,
         {
           method: "GET",
           headers: headers
@@ -57,7 +58,7 @@ function Dashboard() {
   return (
     <section>
       <h1>dashboard</h1>
-      {isLoading ? <div>Loading...</div> : usersLists}
+      {isLoading ? <div>Loading...</div> : ''}
     </section>
   );
 }

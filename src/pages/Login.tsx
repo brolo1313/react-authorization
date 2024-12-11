@@ -18,10 +18,11 @@ const Login = () => {
   const { email, password, loading, errorPasswordMessage, errorEmailMessage } =
     formState;
 
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const navigateToDashboard = useNavigate();
 
-  useEffect(() => {
-  }, [formState]);
+  useEffect(() => {}, [formState]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -39,17 +40,14 @@ const Login = () => {
   const sendForm = async (formState: IFormState) => {
     const { email, password } = formState;
     try {
-      const response = await fetch(
-        "https://node-implementation.vercel.app/api/sign-in",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const response = await fetch(`${apiUrl}/sign-in`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
       if (!response.ok) {
         throw new Error(`Server responded with status ${response.status}`);
@@ -102,7 +100,7 @@ const Login = () => {
         navigateToDashboard("/dashboard");
       }
 
-      localStorageService.setUserSettings(response.result)
+      localStorageService.setUserSettings(response.result);
     }
   };
 

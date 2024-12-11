@@ -4,6 +4,7 @@ import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
+import PrivateRoute from "./shared/helpers/privateRoute";
 
 function App() {
   return (
@@ -26,9 +27,9 @@ function App() {
             path="/"
             element={<Navigate to="/login" />}
           />
-          <Route
+           <Route
             path="/dashboard"
-            element={<Dashboard />}
+            element={<PrivateRoute element={<Dashboard />} />}
           />
         </Routes>
       </div>
