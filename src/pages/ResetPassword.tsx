@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { TextInput } from "../shared/components/input/input";
+// import { useState } from "react";
+// import { Link } from "react-router-dom";
+// import { TextInput } from "../shared/components/input/input";
 
 const ResetPassword = () => {
-  const [email, setEmail] = useState("");
-  const [errorEmailMessage, setErrorEmailMessage] = useState("");
-  const [loading, setLoading] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [errorEmailMessage, setErrorEmailMessage] = useState("");
+  // const [loading, setLoading] = useState("");
 
-  const handleChange = (e: any) => {};
+  // const handleChange = (e: any) => {};
 
-  const onSubmit = (e: any) => {};
+  // const onSubmit = (e: any) => {};
 
   return (
     <div className="form-container">
       <h2>Reset Password Page</h2>
-      <TextInput
+      {/* <TextInput
         type="text"
         value={email}
         onChange={handleChange}
@@ -33,7 +33,7 @@ const ResetPassword = () => {
       </button>
       <div>
         <Link to="/login">Go to Login</Link>
-      </div>
+      </div> */}
     </div>
   );
 };

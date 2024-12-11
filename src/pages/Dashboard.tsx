@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { localStorageService } from "../shared/helpers/localStorage";
 
-function Dashboard(options: undefined) {
+function Dashboard() {
   const [usersLists, setUsersListState] = useState<[]>([]);
   const [isLoading, setIsLoadingState] = useState<boolean>(false);
 
+  const apiUrl = import.meta.env.VITE_API_URL;
   useEffect(() => {
     getUsers();
   }, []);
@@ -25,7 +26,7 @@ function Dashboard(options: undefined) {
 
     try {
       const response = await fetch(
-        "https://node-implementation.vercel.app/api/all-profiles",
+        apiUrl,
         {
           method: "GET",
           headers: headers
@@ -56,7 +57,7 @@ function Dashboard(options: undefined) {
   return (
     <section>
       <h1>dashboard</h1>
-      {isLoading ? <div>Loading...</div> : ""}
+      {isLoading ? <div>Loading...</div> : usersLists}
     </section>
   );
 }

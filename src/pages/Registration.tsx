@@ -36,41 +36,41 @@ const Registration = () => {
     console.log("Updated formState:", formState);
   }, [formState]);
 
-  const isPasswordValid = (password: string, passwordConfirmation: string) => {
-    if (!password || !passwordConfirmation) {
-      setFormState((prevState) => ({
-        ...prevState,
-        errorPasswordMessage: "Password required",
-      }));
-      return false;
-    } else if (password.length < 8) {
-      setFormState((prevState) => ({
-        ...prevState,
-        passwordLength: "Password is too short",
-      }));
-      return false;
-    } else if (passwordConfirmation.length < 8) {
-      setFormState((prevState) => ({
-        ...prevState,
-        passwordLength: "Password is too short",
-      }));
-      return false;
-    } else if (password !== passwordConfirmation) {
-      setFormState((prevState) => ({
-        ...prevState,
-        errorPasswordMessage: "Upps sorry Password did not match 😔",
-      }));
-      return false;
-    }
+  // const isPasswordValid = (password: string, passwordConfirmation: string) => {
+  //   if (!password || !passwordConfirmation) {
+  //     setFormState((prevState) => ({
+  //       ...prevState,
+  //       errorPasswordMessage: "Password required",
+  //     }));
+  //     return false;
+  //   } else if (password.length < 8) {
+  //     setFormState((prevState) => ({
+  //       ...prevState,
+  //       passwordLength: "Password is too short",
+  //     }));
+  //     return false;
+  //   } else if (passwordConfirmation.length < 8) {
+  //     setFormState((prevState) => ({
+  //       ...prevState,
+  //       passwordLength: "Password is too short",
+  //     }));
+  //     return false;
+  //   } else if (password !== passwordConfirmation) {
+  //     setFormState((prevState) => ({
+  //       ...prevState,
+  //       errorPasswordMessage: "Upps sorry Password did not match 😔",
+  //     }));
+  //     return false;
+  //   }
 
-    // Clear errors if everything is valid
-    setFormState((prevState) => ({
-      ...prevState,
-      errorPasswordMessage: "",
-      passwordLength: "",
-    }));
-    return true;
-  };
+  //   // Clear errors if everything is valid
+  //   setFormState((prevState) => ({
+  //     ...prevState,
+  //     errorPasswordMessage: "",
+  //     passwordLength: "",
+  //   }));
+  //   return true;
+  // };
 
   const isNameValid = (value: string) => {
     if (value.length < 2 && value) {
