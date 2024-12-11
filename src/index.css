@@ -30,8 +30,6 @@ html, body {
 }
 
 body {
-  display: flex;
-  place-items: center;
   background: url("./assets/image/body_bg.jpg") center/cover no-repeat;
 }
 

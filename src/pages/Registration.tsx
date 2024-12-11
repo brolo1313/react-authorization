@@ -163,7 +163,7 @@ const Registration = () => {
     const emailValid = isEmailValid(email);
     const nameValid = isNameValid(name);
 
-    //passwordValid && 
+    //passwordValid &&
     if (emailValid && nameValid) {
       setFormState((prevState) => ({ ...prevState, loading: true }));
       const response = await sendForm();
@@ -192,61 +192,59 @@ const Registration = () => {
     !!nameLengthError;
 
   return (
-    <div className="page-container">
-      <div className="form-container">
-        <h2>Registration Page</h2>
-        <TextInput
-          type="text"
-          value={name}
-          onChange={handleChange}
-          id="name"
-          label="Name"
-          required
-          error={nameLengthError.length ? nameLengthError : nameErrorMessage}
-        />
-        <TextInput
-          type="text"
-          value={email}
-          onChange={handleChange}
-          id="email"
-          label="Email"
-          required
-          error={errorEmailMessage}
-        />
-        <TextInput
-          type="password"
-          value={password}
-          onChange={handleChange}
-          id="password"
-          required
-          label="Password"
-          isPassword
-          error={errorPasswordMessage}
-        />
-        <TextInput
-          type="password"
-          value={passwordConfirmation}
-          onChange={handleChange}
-          id="passwordConfirmation"
-          required
-          label="Confirm password"
-          isPassword
-          error={errorPasswordMessage}
-        />
-        <button
-          onClick={onSubmit}
-          type="submit"
-          name="action"
-          disabled={isButtonDisabled} // Disable button if there are errors
-        >
-          {loading ? "Loading..." : "Sign Up"}
-        </button>
-        {accountCreationSuccessful && !loading ? (
-          <p>You have successfully created an account 👏🏾</p>
-        ) : null}
+    <div className="form-container">
+      <h2>Registration Page</h2>
+      <TextInput
+        type="text"
+        value={name}
+        onChange={handleChange}
+        id="name"
+        label="Name"
+        required
+        error={nameLengthError.length ? nameLengthError : nameErrorMessage}
+      />
+      <TextInput
+        type="text"
+        value={email}
+        onChange={handleChange}
+        id="email"
+        label="Email"
+        required
+        error={errorEmailMessage}
+      />
+      <TextInput
+        type="password"
+        value={password}
+        onChange={handleChange}
+        id="password"
+        required
+        label="Password"
+        isPassword
+        error={errorPasswordMessage}
+      />
+      <TextInput
+        type="password"
+        value={passwordConfirmation}
+        onChange={handleChange}
+        id="passwordConfirmation"
+        required
+        label="Confirm password"
+        isPassword
+        error={errorPasswordMessage}
+      />
+      <button
+        onClick={onSubmit}
+        type="submit"
+        name="action"
+        disabled={isButtonDisabled} // Disable button if there are errors
+      >
+        {loading ? "Loading..." : "Sign Up"}
+      </button>
+      {accountCreationSuccessful && !loading ? (
+        <p>You have successfully created an account 👏🏾</p>
+      ) : null}
 
-        <Link to="/login">Go to Login</Link>
-      </div>
+      <Link to="/login">Go to Login</Link>
     </div>
   );
 };
