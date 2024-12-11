@@ -1,7 +1,6 @@
 .textInput-container {
   position: relative;
   width: 100%;
-  margin-bottom: 1rem;
 }
 
 .textInput-label {
@@ -10,6 +9,7 @@
   font-weight: 500;
   color: #888;
   margin-bottom: 0.5rem;
+  margin-left: 20px;
 }
 
 .textInput-input {
@@ -42,6 +42,10 @@
   color: #fd6060;
   font-size: 0.85rem;
   margin: 5px 0;
+
+  position: absolute;
+  bottom: -25px;
+  left: 20px;
 }
 
 /* Стилі для password input */
@@ -63,9 +67,16 @@
 
 /* Анімація для error state */
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 .textInput-input.error {

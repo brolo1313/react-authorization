@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TextInput } from "../shared/components/input/input";
+import { isEmailValid } from "../shared/helpers/validation";
 
 const Registration = () => {
   const [formState, setFormState] = useState({
@@ -70,30 +71,6 @@ const Registration = () => {
     }));
     return true;
   };
-  const isEmailValid = (value: string) => {
-    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
-
-    if (!value) {
-      setFormState((prevState) => ({
-        ...prevState,
-        errorEmailMessage: "Email is required",
-      }));
-      return false;
-    } else if (!emailRegex.test(value) && value) {
-      setFormState((prevState) => ({
-        ...prevState,
-        errorEmailMessage: "Enter a valid email",
-      }));
-      return false;
-    }
-
-    // Clear error message if valid
-    setFormState((prevState) => ({
-      ...prevState,
-      errorEmailMessage: "",
-    }));
-    return true;
-  };
 
   const isNameValid = (value: string) => {
     if (value.length < 2 && value) {
@@ -152,7 +129,7 @@ const Registration = () => {
     }
 
     if (id === "email") {
-      isEmailValid(value);
+      isEmailValid(value, setFormState);
     }
   };
 
@@ -160,7 +137,7 @@ const Registration = () => {
     e.preventDefault();
 
     // const passwordValid = isPasswordValid(password, passwordConfirmation);
-    const emailValid = isEmailValid(email);
+    const emailValid = isEmailValid(email, setFormState);
     const nameValid = isNameValid(name);
 
     //passwordValid &&
@@ -244,7 +221,9 @@ const Registration = () => {
         <p>You have successfully created an account 👏🏾</p>
       ) : null}
 
-      <Link to="/login">Go to Login</Link>
+      <div>
+        <Link to="/login">Go to Login</Link>
+      </div>
     </div>
   );
 };
