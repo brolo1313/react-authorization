@@ -1,29 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TextInput } from "../shared/components/input/input";
 
-export const validateEmail = (email: string) => {
-  return String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-};
-
 const Registration = () => {
   const [formState, setFormState] = useState({
-    email: ``,
-    password: ``,
-    passwordConfirmation: ``,
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
     loading: false,
     accountCreationSuccessful: false,
-    errorPasswordMessage: ``,
-    errorEmailMessage: ``,
-    passwordLength: ``,
+    errorPasswordMessage: "",
+    errorEmailMessage: "",
+    passwordLength: "",
+    nameErrorMessage: "",
+    nameLengthError: "",
   });
 
-  //destructure the state
   const {
+    name,
     email,
     password,
     passwordConfirmation,
@@ -32,114 +27,183 @@ const Registration = () => {
     errorPasswordMessage,
     errorEmailMessage,
     passwordLength,
+    nameErrorMessage,
+    nameLengthError,
   } = formState;
 
-  const isPasswordValid = (password: any, passwordConfirmation: any) => {
-    if (!password || !passwordConfirmation) {
-      setFormState({
-        ...formState,
-        errorPasswordMessage: "Password required",
-      });
+  useEffect(() => {
+    console.log("Updated formState:", formState);
+  }, [formState]);
 
+  const isPasswordValid = (password: string, passwordConfirmation: string) => {
+    if (!password || !passwordConfirmation) {
+      setFormState((prevState) => ({
+        ...prevState,
+        errorPasswordMessage: "Password required",
+      }));
       return false;
     } else if (password.length < 8) {
-      setFormState({
-        ...formState,
+      setFormState((prevState) => ({
+        ...prevState,
         passwordLength: "Password is too short",
-      });
+      }));
+      return false;
+    } else if (passwordConfirmation.length < 8) {
+      setFormState((prevState) => ({
+        ...prevState,
+        passwordLength: "Password is too short",
+      }));
       return false;
     } else if (password !== passwordConfirmation) {
-      setFormState({
-        ...formState,
+      setFormState((prevState) => ({
+        ...prevState,
         errorPasswordMessage: "Upps sorry Password did not match 😔",
-      });
+      }));
       return false;
     }
 
+    // Clear errors if everything is valid
+    setFormState((prevState) => ({
+      ...prevState,
+      errorPasswordMessage: "",
+      passwordLength: "",
+    }));
     return true;
   };
+  const isEmailValid = (value: string) => {
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 
-  const isEmailValid = (value: any) => {
-    const emailRegex =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (!emailRegex.test(value)) {
-      setFormState({
-        ...formState,
+    if (!value) {
+      setFormState((prevState) => ({
+        ...prevState,
+        errorEmailMessage: "Email is required",
+      }));
+      return false;
+    } else if (!emailRegex.test(value) && value) {
+      setFormState((prevState) => ({
+        ...prevState,
         errorEmailMessage: "Enter a valid email",
-      });
-
+      }));
       return false;
-    } else if (errorEmailMessage) {
-      setFormState({
-        ...formState,
-        errorEmailMessage: "",
-      });
     }
 
+    // Clear error message if valid
+    setFormState((prevState) => ({
+      ...prevState,
+      errorEmailMessage: "",
+    }));
     return true;
   };
 
-  const sendForm = (payload: any) => {
-    // return fetch(
-    //   "https://run.mocky.io/v3/03659a5b-fed5-4c5f-b8d0-4b277e902ed3",
-    //   {
-    //     method: `POST`,
-    //     headers: {
-    //       Accept: `application/json`,
-    //       "Content-Type": `application/json`
-    //     },
-    //     body: JSON.stringify(payload)
-    //   }
-    // );
+  const isNameValid = (value: string) => {
+    if (value.length < 2 && value) {
+      setFormState((prevState) => ({
+        ...prevState,
+        nameLengthError: "Name is too short",
+      }));
+      return false;
+    } else if (!value) {
+      setFormState((prevState) => ({
+        ...prevState,
+        nameErrorMessage: "Name is required",
+        nameLengthError: "",
+      }));
+      return true;
+    }
+
+    // Clear error if name is valid
+    setFormState((prevState) => ({
+      ...prevState,
+      nameLengthError: "",
+      nameErrorMessage: "",
+    }));
+    return true;
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let passwordError = "";
-
-    // if (e.target.id === "password" && password.length < 7) {
-    //   passwordError = "Password is too short";
-    // }
-
-    console.log("e.target id", e.target.id);
-    console.log("e.target value", e.target.value);
-
-    setFormState({
-      ...formState,
-      [e.target?.id]: e.target?.value,
-      passwordLength: passwordError, //In here it display the error
+  const sendForm = () => {
+    return fetch("https://node-implementation.vercel.app/api/all-profiles", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     });
   };
 
-  const onSubmit = async (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+
+    // Update the input value in form state
+    setFormState((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+
+    // Validate field based on id
+    // if (id === "password" || id === "passwordConfirmation") {
+    //   isPasswordValid(
+    //     e?.target?.form?.password.value,
+    //     e?.target?.form?.passwordConfirmation.value
+    //   );
+    // }
+
+    if (id === "name") {
+      isNameValid(value);
+    }
+
+    if (id === "email") {
+      isEmailValid(value);
+    }
+  };
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const passwordValid = isPasswordValid(password, passwordConfirmation);
+    // const passwordValid = isPasswordValid(password, passwordConfirmation);
     const emailValid = isEmailValid(email);
+    const nameValid = isNameValid(name);
 
-    // if (passwordValid && emailValid) {
-    //   const response = await sendForm({
-    //     email: formState.email,
-    //     password: formState.password
-    //   });
+    //passwordValid && 
+    if (emailValid && nameValid) {
+      setFormState((prevState) => ({ ...prevState, loading: true }));
+      const response = await sendForm();
+      setFormState((prevState) => ({ ...prevState, loading: false }));
 
-    //   if (response.ok) {
-    //     setFormState({
-    //       ...formState,
-    //       accountCreationSuccessful: true,
-    //       email: ``,
-    //       password: ``,
-    //       passwordConfirmation: ``,
-    //       errorPasswordMessage: ""
-    //     });
-    //   }
-    // }
+      if (response.ok) {
+        setFormState({
+          ...formState,
+          accountCreationSuccessful: true,
+          email: "",
+          name: "",
+          password: "",
+          passwordConfirmation: "",
+          errorPasswordMessage: "",
+        });
+      }
+    }
   };
+
+  // Button should be disabled if there are any error messages
+  const isButtonDisabled =
+    loading ||
+    !!errorEmailMessage ||
+    !!errorPasswordMessage ||
+    !!passwordLength ||
+    !!nameLengthError;
 
   return (
     <div className="page-container">
       <div className="form-container">
         <h2>Registration Page</h2>
+        <TextInput
+          type="text"
+          value={name}
+          onChange={handleChange}
+          id="name"
+          label="Name"
+          required
+          error={nameLengthError.length ? nameLengthError : nameErrorMessage}
+        />
         <TextInput
           type="text"
           value={email}
@@ -157,7 +221,7 @@ const Registration = () => {
           required
           label="Password"
           isPassword
-          error={passwordLength}
+          error={errorPasswordMessage}
         />
         <TextInput
           type="password"
@@ -170,19 +234,18 @@ const Registration = () => {
           error={errorPasswordMessage}
         />
         <button
+          onClick={onSubmit}
           type="submit"
           name="action"
-          onClick={onSubmit}
-          disabled={!formState.email}
+          disabled={isButtonDisabled} // Disable button if there are errors
         >
-          {loading ? `Loading...` : `Sign Up`}
+          {loading ? "Loading..." : "Sign Up"}
         </button>
-
         {accountCreationSuccessful && !loading ? (
-          <p>You have succefully create and account 👏🏾</p>
+          <p>You have successfully created an account 👏🏾</p>
         ) : null}
 
-        <Link to="/login">Go to Registration</Link>
+        <Link to="/login">Go to Login</Link>
       </div>
     </div>
   );

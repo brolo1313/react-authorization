@@ -39,9 +39,9 @@
 }
 
 .textInput-error {
-  color: #ff4646;
+  color: #fd6060;
   font-size: 0.85rem;
-  margin-top: 0.5rem;
+  margin: 5px 0;
 }
 
 /* Стилі для password input */
