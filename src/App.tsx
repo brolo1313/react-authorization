@@ -1,19 +1,11 @@
-import { useState } from "react";
 import "./App.css";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Router,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <BrowserRouter>
       <div className="main">
@@ -33,6 +25,10 @@ function App() {
           <Route
             path="/"
             element={<Navigate to="/login" />}
+          />
+          <Route
+            path="/dashboard"
+            element={<Dashboard />}
           />
         </Routes>
       </div>

@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TextInput } from "../shared/components/input/input";
 import { useEffect, useState } from "react";
 import { isEmailValid } from "../shared/helpers/validation";
-import { FormState } from "../shared/models/auth";
+import { IFormState } from "../shared/models/auth";
+import { localStorageService } from "../shared/helpers/localStorage";
 
 const Login = () => {
   const [formState, setFormState] = useState({
@@ -17,9 +18,9 @@ const Login = () => {
   const { email, password, loading, errorPasswordMessage, errorEmailMessage } =
     formState;
 
+  const navigateToDashboard = useNavigate();
+
   useEffect(() => {
-    // This will run whenever formState changes
-    console.log("Updated formState:", formState);
   }, [formState]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,10 +34,9 @@ const Login = () => {
     if (id === "email") {
       isEmailValid(value, setFormState);
     }
-
   };
 
-  const sendForm = async (formState: FormState) => {
+  const sendForm = async (formState: IFormState) => {
     const { email, password } = formState;
     try {
       const response = await fetch(
@@ -47,8 +47,7 @@ const Login = () => {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          // You can include body if needed
-          body: JSON.stringify({email,password})
+          body: JSON.stringify({ email, password }),
         }
       );
 
@@ -56,7 +55,12 @@ const Login = () => {
         throw new Error(`Server responded with status ${response.status}`);
       }
 
-      return response;
+      const data = await response.json();
+
+      return {
+        result: { ...data },
+        success: true,
+      };
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Fetch error:", error.message);
@@ -85,15 +89,25 @@ const Login = () => {
         return { ...prevState, loading: false };
       });
 
-      // console.log("formState", formState);
-      // console.log('response', response);
+      if (response.success) {
+        setFormState({
+          ...formState,
+          email: "",
+          password: "",
+          errorPasswordMessage: "",
+          errorEmailMessage: "",
+          nameErrorMessage: "",
+        });
+
+        navigateToDashboard("/dashboard");
+      }
+
+      localStorageService.setUserSettings(response.result)
     }
   };
 
   const isButtonDisabled =
-  loading ||
-  !!errorEmailMessage ||
-  !!errorPasswordMessage || !password;
+    loading || !!errorEmailMessage || !!errorPasswordMessage || !password;
 
   return (
     <div className="form-container">
