@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { TextInput } from "../shared/components/input/input";
+import { TextInput } from "../../../shared/components/input/input";
 import { useEffect, useState } from "react";
-import { isEmailValid } from "../shared/helpers/validation";
-import { IFormState } from "../shared/models/auth";
-import { useLoader } from "../shared/components/loader/loaderContext";
-import { useAuth } from "../shared/components/auth/AuthContext";
+import { isEmailValid } from "../../../shared/helpers/validation";
+import { IFormState } from "../../../shared/models/auth";
+import { useLoader } from "../../../shared/components/loader/loaderContext";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [formState, setFormState] = useState({
@@ -37,6 +37,21 @@ const Login = () => {
 
     if (id === "email") {
       isEmailValid(value, setFormState);
+    }
+
+    if (id === "password") {
+      if (value.length > 0) {
+        setFormState((prevState: any) => ({
+          ...prevState,
+          errorPasswordMessage: "",
+        }));
+      }
+      return !value.length
+        ? setFormState((prevState: any) => ({
+            ...prevState,
+            errorPasswordMessage: "Password is required",
+          }))
+        : null;
     }
   };
 
@@ -82,8 +97,6 @@ const Login = () => {
     if (emailValid && password) {
       showLoader();
       const response = await sendForm(formState);
-
-      console.log('response', response);
 
       if (response.success) {
         updateUserSettings(response.result);

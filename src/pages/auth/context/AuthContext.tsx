@@ -1,6 +1,6 @@
 // AuthContext.js
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { IUserSettings } from "../../models/auth";
+import { IUserSettings } from "../../../shared/models/auth";
 
 export interface ILoaderContext {
     userSettings: IUserSettings | undefined;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { TextInput } from "../shared/components/input/input";
-import { isEmailValid } from "../shared/helpers/validation";
+import { TextInput } from "../../../shared/components/input/input";
+import { isEmailValid } from "../../../shared/helpers/validation";
 
 const Registration = () => {
   const [formState, setFormState] = useState({
@@ -33,7 +33,6 @@ const Registration = () => {
   } = formState;
 
   useEffect(() => {
-    console.log("Updated formState:", formState);
   }, [formState]);
 
   // const isPasswordValid = (password: string, passwordConfirmation: string) => {

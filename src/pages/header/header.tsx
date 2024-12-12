@@ -1,6 +1,6 @@
 // Header.tsx
 import "./Header.css";
-import { useAuth } from "../../shared/components/auth/AuthContext";
+import { useAuth } from "../auth/context/AuthContext";
 
 const Header = () => {
   const { userSettings, clearUserSettings } = useAuth();
@@ -11,8 +11,6 @@ const Header = () => {
     clearUserSettings();
     window.location.href = "/login";
   };
-
-  console.log('фівфів');
 
   return (
     <>
