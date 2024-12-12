@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { localStorageService } from "../shared/helpers/localStorage";
-import { useLoader } from "../shared/components/loader/loaderContext";
+import { localStorageService } from "../../shared/helpers/localStorage";
+import { useLoader } from "../../shared/components/loader/loaderContext";
+import { IUser } from "../../shared/models/usersList";
+import "./dashboard.css";
 
 function Dashboard() {
-  const [usersLists, setUsersListState] = useState<[]>([]);
-  const { showLoader, hideLoader } = useLoader();
+  const [usersLists, setUsersListState] = useState<IUser[]>([]);
+  const { showLoader, hideLoader, isLoading } = useLoader();
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -54,10 +56,31 @@ function Dashboard() {
   };
 
   return (
-    <section>
-      <h1>dashboard</h1>
-      {/* {isLoading ? <div>Loading...</div> : ''} */}
-    </section>
+    <>
+      {!isLoading && false ? (
+        <section>
+          {/* <h1>Dashboard</h1> */}
+          <table className="user-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {usersLists.map((user, index) => (
+                <tr key={index}>
+                  <td>{user.name}</td>
+                  <td>{user.role}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      ) : (
+        <div className="empty-data">Nothing to show</div>
+      )}
+    </>
   );
 }
 

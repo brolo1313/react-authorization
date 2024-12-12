@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 import PrivateRoute from "./shared/helpers/privateRoute";
 import { LoaderProvider } from "./shared/components/loader/loaderContext";
 import { Loader } from "./shared/components/loader/loader";
