@@ -4,19 +4,21 @@ import { useEffect, useState } from "react";
 import { isEmailValid } from "../shared/helpers/validation";
 import { IFormState } from "../shared/models/auth";
 import { localStorageService } from "../shared/helpers/localStorage";
+import { useLoader } from "../shared/components/loader/loaderContext";
 
 const Login = () => {
   const [formState, setFormState] = useState({
     email: "",
     password: "",
-    loading: false,
     errorPasswordMessage: "",
     errorEmailMessage: "",
     nameErrorMessage: "",
   });
 
-  const { email, password, loading, errorPasswordMessage, errorEmailMessage } =
+  const { email, password, errorPasswordMessage, errorEmailMessage } =
     formState;
+
+  const { showLoader, hideLoader, isLoading } = useLoader();
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -38,6 +40,7 @@ const Login = () => {
   };
 
   const sendForm = async (formState: IFormState) => {
+    showLoader();
     const { email, password } = formState;
     try {
       const response = await fetch(`${apiUrl}/sign-in`, {
@@ -62,10 +65,10 @@ const Login = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Fetch error:", error.message);
-        setFormState((prevState) => ({ ...prevState, loading: false }));
+        hideLoader();
       } else {
         console.error("Unknown error:", error);
-        setFormState((prevState) => ({ ...prevState, loading: false }));
+        hideLoader();
       }
       throw error; // Re-throw the error so that we can handle it in onSubmit
     }
@@ -105,7 +108,7 @@ const Login = () => {
   };
 
   const isButtonDisabled =
-    loading || !!errorEmailMessage || !!errorPasswordMessage || !password;
+    isLoading || !!errorEmailMessage || !!errorPasswordMessage || !password;
 
   return (
     <div className="form-container">
@@ -139,7 +142,7 @@ const Login = () => {
         onClick={onSubmit}
         disabled={isButtonDisabled}
       >
-        {loading ? `Loading...` : `Sing in`}
+        {isLoading ? `Processing...` : `Sing in`}
       </button>
 
       <div>

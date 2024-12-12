@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import { localStorageService } from "../shared/helpers/localStorage";
+import { useLoader } from "../shared/components/loader/loaderContext";
 
 function Dashboard() {
   const [usersLists, setUsersListState] = useState<[]>([]);
-  const [isLoading, setIsLoadingState] = useState<boolean>(false);
+  const { showLoader, hideLoader } = useLoader();
 
   const apiUrl = import.meta.env.VITE_API_URL;
-  
+
   useEffect(() => {
     getUsers();
   }, []);
 
   const getUsers = async () => {
-    setIsLoadingState(true);
+    showLoader();
 
     const userSettings = localStorageService.getUserSettings();
     const accessToken = userSettings ? userSettings?.accessToken : null;
-    
+
     const headers: HeadersInit = {
       "Content-Type": "application/json",
     };
@@ -26,13 +27,10 @@ function Dashboard() {
     }
 
     try {
-      const response = await fetch(
-        `${apiUrl}/all-profiles`,
-        {
-          method: "GET",
-          headers: headers
-        }
-      );
+      const response = await fetch(`${apiUrl}/all-profiles`, {
+        method: "GET",
+        headers: headers,
+      });
 
       if (!response.ok) {
         throw new Error(`Server responded with status ${response.status}`);
@@ -44,21 +42,21 @@ function Dashboard() {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Fetch error:", error.message);
-        setIsLoadingState(false);
+        hideLoader();
       } else {
         console.error("Unknown error:", error);
-        setIsLoadingState(false);
+        hideLoader();
       }
       throw error;
     } finally {
-      setIsLoadingState(false);
+      hideLoader();
     }
   };
 
   return (
     <section>
       <h1>dashboard</h1>
-      {isLoading ? <div>Loading...</div> : ''}
+      {/* {isLoading ? <div>Loading...</div> : ''} */}
     </section>
   );
 }

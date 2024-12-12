@@ -5,35 +5,41 @@ import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./shared/helpers/privateRoute";
+import { LoaderProvider } from "./shared/components/loader/loaderContext";
+import { Loader } from "./shared/components/loader/loader";
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="main">
-        <Routes>
-          <Route
-            path="/login"
-            element={<Login />}
-          />
-          <Route
-            path="/registration"
-            element={<Registration />}
-          />
-          <Route
-            path="/reset-password"
-            element={<ResetPassword />}
-          />
-          <Route
-            path="/"
-            element={<Navigate to="/login" />}
-          />
-           <Route
-            path="/dashboard"
-            element={<PrivateRoute element={<Dashboard />} />}
-          />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <LoaderProvider>
+      <Loader />
+      <BrowserRouter>
+        <div className="main">
+          <Routes>
+            <Route
+              path="/login"
+              element={<Login />}
+            />
+            <Route
+              path="/registration"
+              element={<Registration />}
+            />
+            <Route
+              path="/reset-password"
+              element={<ResetPassword />}
+            />
+            <Route
+              path="/"
+              element={<Navigate to="/login" />}
+            />
+            <Route
+              path="/dashboard"
+              element={<PrivateRoute element={<Dashboard />} />}
+            />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </LoaderProvider>
+
   );
 }
 
