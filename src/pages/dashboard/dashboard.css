@@ -2,9 +2,9 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  background-color: rgba(255, 255, 255, 0.1); /* прозорий фон */
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* легка тінь */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .user-table th,
@@ -15,7 +15,7 @@
 }
 
 .user-table thead {
-  background-color: rgba(0, 0, 0, 0.1); /* темніший фон для заголовків */
+  background-color: rgba(0, 0, 0, 0.1);
   color: #fff;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .user-table tbody tr:hover {
-  background-color: rgba(0, 0, 0, 0.05); /* ефект наведеного курсора */
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .user-table td {

@@ -3,8 +3,8 @@ import { TextInput } from "../shared/components/input/input";
 import { useEffect, useState } from "react";
 import { isEmailValid } from "../shared/helpers/validation";
 import { IFormState } from "../shared/models/auth";
-import { localStorageService } from "../shared/helpers/localStorage";
 import { useLoader } from "../shared/components/loader/loaderContext";
+import { useAuth } from "../shared/components/auth/AuthContext";
 
 const Login = () => {
   const [formState, setFormState] = useState({
@@ -19,6 +19,7 @@ const Login = () => {
     formState;
 
   const { showLoader, hideLoader, isLoading } = useLoader();
+  const { updateUserSettings } = useAuth();
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -40,7 +41,6 @@ const Login = () => {
   };
 
   const sendForm = async (formState: IFormState) => {
-    showLoader();
     const { email, password } = formState;
     try {
       const response = await fetch(`${apiUrl}/sign-in`, {
@@ -80,17 +80,14 @@ const Login = () => {
     const emailValid = isEmailValid(email, setFormState);
 
     if (emailValid && password) {
-      setFormState((prevState) => {
-        return { ...prevState, loading: true };
-      });
-
+      showLoader();
       const response = await sendForm(formState);
 
-      setFormState((prevState) => {
-        return { ...prevState, loading: false };
-      });
+      console.log('response', response);
 
       if (response.success) {
+        updateUserSettings(response.result);
+
         setFormState({
           ...formState,
           email: "",
@@ -102,8 +99,6 @@ const Login = () => {
 
         navigateToDashboard("/dashboard");
       }
-
-      localStorageService.setUserSettings(response.result);
     }
   };
 

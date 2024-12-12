@@ -57,7 +57,7 @@ function Dashboard() {
 
   return (
     <>
-      {!isLoading && false ? (
+      {!isLoading ? (
         <section>
           {/* <h1>Dashboard</h1> */}
           <table className="user-table">
