@@ -1,20 +1,95 @@
-// import { useState } from "react";
-// import { Link } from "react-router-dom";
-// import { TextInput } from "../shared/components/input/input";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { TextInput } from "../../../shared/components/input/input";
+import { useLoader } from "../../../shared/components/loader/loaderContext";
+import { isEmailValid } from "../../../shared/helpers/validation";
+import { IFormState } from "../../../shared/models/auth";
 
 const ResetPassword = () => {
-  // const [email, setEmail] = useState("");
-  // const [errorEmailMessage, setErrorEmailMessage] = useState("");
-  // const [loading, setLoading] = useState("");
+  const [formState, setFormState] = useState({
+    email: "",
+    errorEmailMessage: "",
+  });
 
-  // const handleChange = (e: any) => {};
+  const { email, errorEmailMessage } = formState;
+  const { showLoader, hideLoader, isLoading } = useLoader();
 
-  // const onSubmit = (e: any) => {};
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const navigateToLogin = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+
+    setFormState((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+
+    if (id === "email") {
+      isEmailValid(value, setFormState);
+    }
+  };
+
+  const sendForm = async (formState: Pick<IFormState, "email">) => {
+    const { email } = formState;
+    try {
+      const response = await fetch(`${apiUrl}/reset-password`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        console.log("response", response);
+        throw new Error(`Server responded with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      return {
+        result: { ...data },
+        success: true,
+      };
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Fetch error:", error.message);
+        hideLoader();
+      } else {
+        console.error("Unknown error:", error);
+        hideLoader();
+      }
+      throw error;
+    }
+  };
+
+  const onSubmit = async (e: any) => {
+    e.preventDefault();
+
+    if (!errorEmailMessage && email) {
+      showLoader();
+      const response = await sendForm(formState);
+
+      if (response.success) {
+        setFormState({
+          ...formState,
+          email: "",
+          errorEmailMessage: "",
+        });
+
+        navigateToLogin("/login");
+        hideLoader();
+      }
+    }
+  };
+
+  const isButtonDisabled = isLoading || !!errorEmailMessage || !email;
 
   return (
     <div className="form-container">
       <h2>Reset Password Page</h2>
-      {/* <TextInput
+      <TextInput
         type="text"
         value={email}
         onChange={handleChange}
@@ -27,13 +102,13 @@ const ResetPassword = () => {
         type="submit"
         name="action"
         onClick={onSubmit}
-        disabled={!email}
+        disabled={isButtonDisabled}
       >
-        {loading ? `Loading...` : `Reset password`}
+        {isLoading ? `Processing...` : `Reset password`}
       </button>
       <div>
         <Link to="/login">Go to Login</Link>
-      </div> */}
+      </div>
     </div>
   );
 };
