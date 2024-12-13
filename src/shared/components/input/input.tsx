@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import "./input.css";
+import { useLoader } from "../../../shared/components/loader/loaderContext";
 
 export interface Props {
   value: string;
@@ -30,6 +31,8 @@ export const TextInput = memo(
     error,
     placeholder,
   }: Props) => {
+    const { isLoading } = useLoader(); 
+    
     return (
       <div className="textInput-container">
         <label className="textInput-label">
@@ -42,6 +45,7 @@ export const TextInput = memo(
           type={type}
           className="textInput-input"
           placeholder={placeholder}
+          disabled={isLoading}
         />
         {description && <p className="textInput-description">{description}</p>}
         {error && <p className="textInput-error">{error}</p>}
