@@ -4,9 +4,10 @@ import { useState } from "react";
 import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { useAuth } from "../../../context/AuthContext";
+import { optionalSetFormState } from "../../../shared/helpers/useState";
 
 const Login = () => {
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<Partial<IFormState>>({
     email: "",
     password: "",
     isLoading: false,
@@ -29,12 +30,6 @@ const Login = () => {
 
   const navigateToDashboard = useNavigate();
 
-  const optionalSetFormState = (formValue: Partial<IFormState>) => {
-    setFormState((prevState) => ({
-      ...prevState,
-      ...formValue,
-    }));
-  }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
@@ -63,7 +58,7 @@ const Login = () => {
     }
   };
 
-  const sendForm = async (formState: IFormState) => {
+  const sendForm = async (formState: Partial<IFormState>) => {
     const { email, password } = formState;
     try {
       const response = await fetch(`${apiUrl}/sign-in`, {
@@ -88,10 +83,10 @@ const Login = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Fetch error:", error.message);
-        optionalSetFormState({isLoading: false})
+        optionalSetFormState({isLoading: false}, setFormState)
       } else {
         console.error("Unknown error:", error);
-        optionalSetFormState({isLoading: false})
+        optionalSetFormState({isLoading: false}, setFormState)
       }
       throw error; // Re-throw the error so that we can handle it in onSubmit
     }
@@ -103,7 +98,7 @@ const Login = () => {
     const emailValid = isEmailValid(email, setFormState);
 
     if (emailValid && password) {
-      optionalSetFormState({isLoading: true})
+      optionalSetFormState({isLoading: true}, setFormState)
       const response = await sendForm(formState);
 
       if (response.success) {
@@ -140,6 +135,7 @@ const Login = () => {
         required
         placeholder="test@example.com"
         error={errorEmailMessage}
+        disabled={isLoading}
       />
 
       <TextInput
@@ -151,6 +147,7 @@ const Login = () => {
         label="Password"
         isPassword
         error={errorPasswordMessage}
+        disabled={isLoading}
       />
 
       <button

@@ -4,15 +4,16 @@ import { TextInput } from "../../../shared/components/input/input";
 import { useLoader } from "../../../context/loaderContext";
 import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
+import { optionalSetFormState } from "../../../shared/helpers/useState";
 
 const ResetPassword = () => {
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<Partial<IFormState>>({
     email: "",
+    isLoading: false,
     errorEmailMessage: "",
   });
 
-  const { email, errorEmailMessage } = formState;
-  const { showLoader, hideLoader, isLoading } = useLoader();
+  const { email, errorEmailMessage, isLoading } = formState;
 
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigateToLogin = useNavigate();
@@ -30,7 +31,7 @@ const ResetPassword = () => {
     }
   };
 
-  const sendForm = async (formState: Pick<IFormState, "email">) => {
+  const sendForm = async (formState: Partial<IFormState>) => {
     const { email } = formState;
     try {
       const response = await fetch(`${apiUrl}/reset-password`, {
@@ -43,7 +44,6 @@ const ResetPassword = () => {
       });
 
       if (!response.ok) {
-        console.log("response", response);
         throw new Error(`Server responded with status ${response.status}`);
       }
 
@@ -55,10 +55,10 @@ const ResetPassword = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Fetch error:", error.message);
-        hideLoader();
+         optionalSetFormState({isLoading: false}, setFormState)
       } else {
         console.error("Unknown error:", error);
-        hideLoader();
+        optionalSetFormState({isLoading: false}, setFormState)
       }
       throw error;
     }
@@ -68,18 +68,18 @@ const ResetPassword = () => {
     e.preventDefault();
 
     if (!errorEmailMessage && email) {
-      showLoader();
+      optionalSetFormState({isLoading: true}, setFormState)
       const response = await sendForm(formState);
 
       if (response.success) {
         setFormState({
           ...formState,
           email: "",
+          isLoading: false,
           errorEmailMessage: "",
         });
 
         navigateToLogin("/login");
-        hideLoader();
       }
     }
   };
@@ -97,6 +97,7 @@ const ResetPassword = () => {
         label="Email"
         required
         error={errorEmailMessage}
+        disabled={isLoading}
       />
       <button
         type="submit"

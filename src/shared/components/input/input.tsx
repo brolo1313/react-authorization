@@ -1,9 +1,8 @@
 import React, { memo } from "react";
 import "./input.css";
-import { useLoader } from "../../../context/loaderContext";
 
 export interface Props {
-  value: string;
+  value: string | undefined;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
   id?: string;
@@ -15,7 +14,7 @@ export interface Props {
   label?: string;
   required?: boolean;
   description?: string;
-
+  disabled?: boolean;
   placeholder?: string;
 }
 
@@ -30,9 +29,9 @@ export const TextInput = memo(
     description,
     error,
     placeholder,
+    disabled,
   }: Props) => {
-    const { isLoading } = useLoader(); 
-    
+
     return (
       <div className="textInput-container">
         <label className="textInput-label">
@@ -45,7 +44,7 @@ export const TextInput = memo(
           type={type}
           className="textInput-input"
           placeholder={placeholder}
-          disabled={isLoading}
+          disabled={disabled}
         />
         {description && <p className="textInput-description">{description}</p>}
         {error && <p className="textInput-error">{error}</p>}

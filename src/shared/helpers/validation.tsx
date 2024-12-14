@@ -1,4 +1,4 @@
-export const isEmailValid = (value: string, setFormState: any) => {
+export const isEmailValid = (value: string | undefined, setFormState: any) => {
   const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 
   if (!value) {
