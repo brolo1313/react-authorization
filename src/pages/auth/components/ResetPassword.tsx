@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TextInput } from "../../../shared/components/input/input";
-import { useLoader } from "../../../context/loaderContext";
 import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { optionalSetFormState } from "../../../shared/helpers/useState";
+import { API_URL } from "../../../config";
 
 const ResetPassword = () => {
   const [formState, setFormState] = useState<Partial<IFormState>>({
@@ -15,7 +15,6 @@ const ResetPassword = () => {
 
   const { email, errorEmailMessage, isLoading } = formState;
 
-  const apiUrl = import.meta.env.VITE_API_URL;
   const navigateToLogin = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +33,7 @@ const ResetPassword = () => {
   const sendForm = async (formState: Partial<IFormState>) => {
     const { email } = formState;
     try {
-      const response = await fetch(`${apiUrl}/reset-password`, {
+      const response = await fetch(`${API_URL}/reset-password`, {
         method: "POST",
         headers: {
           Accept: "application/json",

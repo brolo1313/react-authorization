@@ -5,6 +5,7 @@ import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { useAuth } from "../../../context/AuthContext";
 import { optionalSetFormState } from "../../../shared/helpers/useState";
+import { API_URL } from "../../../config";
 
 const Login = () => {
   const [formState, setFormState] = useState<Partial<IFormState>>({
@@ -25,8 +26,6 @@ const Login = () => {
   } = formState;
 
   const { updateUserSettings } = useAuth();
-
-  const apiUrl = import.meta.env.VITE_API_URL;
 
   const navigateToDashboard = useNavigate();
 
@@ -61,7 +60,7 @@ const Login = () => {
   const sendForm = async (formState: Partial<IFormState>) => {
     const { email, password } = formState;
     try {
-      const response = await fetch(`${apiUrl}/sign-in`, {
+      const response = await fetch(`${API_URL }/sign-in`, {
         method: "POST",
         headers: {
           Accept: "application/json",
