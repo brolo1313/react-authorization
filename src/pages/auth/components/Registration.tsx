@@ -1,17 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { TextInput } from "../../../shared/components/input/input";
-import { isEmailValid } from "../../../shared/helpers/validation";
+import {
+  isEmailValid,
+  isNameValid,
+  isPasswordConfirmationValid,
+  isPasswordValid,
+} from "../../../shared/helpers/validation";
+import { IFormState } from "../../../shared/models/auth";
+
+const validators: any = {
+  name: isNameValid,
+  email: isEmailValid,
+  password: isPasswordValid,
+  passwordConfirmation: isPasswordConfirmationValid,
+};
 
 const Registration = () => {
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<Partial<IFormState>>({
     name: "",
     email: "",
     password: "",
     passwordConfirmation: "",
-    loading: false,
-    accountCreationSuccessful: false,
+    isLoading: false,
     errorPasswordMessage: "",
+    errorPasswordConfirmation: "",
     errorEmailMessage: "",
     passwordLength: "",
     nameErrorMessage: "",
@@ -23,78 +36,14 @@ const Registration = () => {
     email,
     password,
     passwordConfirmation,
-    loading,
-    accountCreationSuccessful,
+    isLoading,
     errorPasswordMessage,
+    errorPasswordConfirmation,
     errorEmailMessage,
     passwordLength,
     nameErrorMessage,
     nameLengthError,
   } = formState;
-
-  useEffect(() => {
-  }, [formState]);
-
-  // const isPasswordValid = (password: string, passwordConfirmation: string) => {
-  //   if (!password || !passwordConfirmation) {
-  //     setFormState((prevState) => ({
-  //       ...prevState,
-  //       errorPasswordMessage: "Password required",
-  //     }));
-  //     return false;
-  //   } else if (password.length < 8) {
-  //     setFormState((prevState) => ({
-  //       ...prevState,
-  //       passwordLength: "Password is too short",
-  //     }));
-  //     return false;
-  //   } else if (passwordConfirmation.length < 8) {
-  //     setFormState((prevState) => ({
-  //       ...prevState,
-  //       passwordLength: "Password is too short",
-  //     }));
-  //     return false;
-  //   } else if (password !== passwordConfirmation) {
-  //     setFormState((prevState) => ({
-  //       ...prevState,
-  //       errorPasswordMessage: "Upps sorry Password did not match 😔",
-  //     }));
-  //     return false;
-  //   }
-
-  //   // Clear errors if everything is valid
-  //   setFormState((prevState) => ({
-  //     ...prevState,
-  //     errorPasswordMessage: "",
-  //     passwordLength: "",
-  //   }));
-  //   return true;
-  // };
-
-  const isNameValid = (value: string) => {
-    if (value.length < 2 && value) {
-      setFormState((prevState) => ({
-        ...prevState,
-        nameLengthError: "Name is too short",
-      }));
-      return false;
-    } else if (!value) {
-      setFormState((prevState) => ({
-        ...prevState,
-        nameErrorMessage: "Name is required",
-        nameLengthError: "",
-      }));
-      return true;
-    }
-
-    // Clear error if name is valid
-    setFormState((prevState) => ({
-      ...prevState,
-      nameLengthError: "",
-      nameErrorMessage: "",
-    }));
-    return true;
-  };
 
   const sendForm = () => {
     return fetch("https://node-implementation.vercel.app/api/all-profiles", {
@@ -115,32 +64,25 @@ const Registration = () => {
       [id]: value,
     }));
 
-    // Validate field based on id
-    // if (id === "password" || id === "passwordConfirmation") {
-    //   isPasswordValid(
-    //     e?.target?.form?.password.value,
-    //     e?.target?.form?.passwordConfirmation.value
-    //   );
-    // }
-
-    if (id === "name") {
-      isNameValid(value);
-    }
-
-    if (id === "email") {
-      isEmailValid(value, setFormState);
+    if (validators[id]) {
+      validators[id](value, setFormState, password);
     }
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // const passwordValid = isPasswordValid(password, passwordConfirmation);
-    const emailValid = isEmailValid(email, setFormState);
-    const nameValid = isNameValid(name);
+    const emailValid = validators.email(email, setFormState);
+    const nameValid = validators.name(name, setFormState);
+    const passwordValid = validators.password(password, setFormState);
+    const passwordConfirmationValid = validators.passwordConfirmation(
+      passwordConfirmation,
+      setFormState,
+      password
+    );
 
     //passwordValid &&
-    if (emailValid && nameValid) {
+    if (emailValid && nameValid && passwordValid && passwordConfirmationValid) {
       setFormState((prevState) => ({ ...prevState, loading: true }));
       const response = await sendForm();
       setFormState((prevState) => ({ ...prevState, loading: false }));
@@ -148,12 +90,13 @@ const Registration = () => {
       if (response.ok) {
         setFormState({
           ...formState,
-          accountCreationSuccessful: true,
           email: "",
           name: "",
           password: "",
           passwordConfirmation: "",
           errorPasswordMessage: "",
+          nameLengthError: "",
+          nameErrorMessage: "",
         });
       }
     }
@@ -161,11 +104,13 @@ const Registration = () => {
 
   // Button should be disabled if there are any error messages
   const isButtonDisabled =
-    loading ||
+    isLoading ||
     !!errorEmailMessage ||
     !!errorPasswordMessage ||
+    !!errorPasswordConfirmation ||
     !!passwordLength ||
-    !!nameLengthError;
+    !!nameLengthError ||
+    !!nameErrorMessage;
 
   return (
     <div className="form-container">
@@ -177,7 +122,7 @@ const Registration = () => {
         id="name"
         label="Name"
         required
-        error={nameLengthError.length ? nameLengthError : nameErrorMessage}
+        error={nameLengthError?.length ? nameLengthError : nameErrorMessage}
       />
       <TextInput
         type="text"
@@ -206,7 +151,8 @@ const Registration = () => {
         required
         label="Confirm password"
         isPassword
-        error={errorPasswordMessage}
+        error={errorPasswordConfirmation}
+        disabled={!password}
       />
       <button
         onClick={onSubmit}
@@ -214,11 +160,8 @@ const Registration = () => {
         name="action"
         disabled={isButtonDisabled} // Disable button if there are errors
       >
-        {loading ? "Loading..." : "Sign Up"}
+        {isLoading ? "Loading..." : "Sign Up"}
       </button>
-      {accountCreationSuccessful && !loading ? (
-        <p>You have successfully created an account 👏🏾</p>
-      ) : null}
 
       <div>
         <Link to="/login">Go to Login</Link>

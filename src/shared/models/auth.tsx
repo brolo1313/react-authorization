@@ -5,6 +5,12 @@ export interface IFormState {
     nameErrorMessage: string;
     password: string;
     isLoading: boolean;
+
+    name?: string,
+    passwordConfirmation?: string,
+    passwordLength? : string,
+    nameLengthError? : string,
+    errorPasswordConfirmation? : string
   }
 
 
