@@ -4,6 +4,7 @@ export interface IFormState {
     errorPasswordMessage: string;
     nameErrorMessage: string;
     password: string;
+    isLoading: boolean;
   }
 
 

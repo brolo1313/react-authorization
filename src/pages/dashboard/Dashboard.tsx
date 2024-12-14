@@ -57,9 +57,9 @@ function Dashboard() {
 
   return (
     <>
-      {!isLoading ? (
-        <section>
-          {/* <h1>Dashboard</h1> */}
+      <section>
+        {/* <h1>Dashboard</h1> */}
+        {!isLoading && usersLists.length? (
           <table className="user-table">
             <thead>
               <tr>
@@ -76,10 +76,10 @@ function Dashboard() {
               ))}
             </tbody>
           </table>
-        </section>
-      ) : (
-        <div className="empty-data">Nothing to show</div>
-      )}
+        ) : (
+          <div className="empty-data">Nothing to show</div>
+        )}
+      </section>
     </>
   );
 }

@@ -1,32 +1,40 @@
 import { Link, useNavigate } from "react-router-dom";
 import { TextInput } from "../../../shared/components/input/input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
-import { useLoader } from "../../../shared/components/loader/loaderContext";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [formState, setFormState] = useState({
     email: "",
     password: "",
+    isLoading: false,
     errorPasswordMessage: "",
     errorEmailMessage: "",
     nameErrorMessage: "",
   });
 
-  const { email, password, errorPasswordMessage, errorEmailMessage } =
-    formState;
+  const {
+    email,
+    password,
+    errorPasswordMessage,
+    errorEmailMessage,
+    isLoading,
+  } = formState;
 
-  const { showLoader, hideLoader, isLoading } = useLoader();
   const { updateUserSettings } = useAuth();
 
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const navigateToDashboard = useNavigate();
 
-  useEffect(() => {}, [formState]);
-
+  const optionalSetFormState = (formValue: Partial<IFormState>) => {
+    setFormState((prevState) => ({
+      ...prevState,
+      ...formValue,
+    }));
+  }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
@@ -80,10 +88,10 @@ const Login = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Fetch error:", error.message);
-        hideLoader();
+        optionalSetFormState({isLoading: false})
       } else {
         console.error("Unknown error:", error);
-        hideLoader();
+        optionalSetFormState({isLoading: false})
       }
       throw error; // Re-throw the error so that we can handle it in onSubmit
     }
@@ -95,7 +103,7 @@ const Login = () => {
     const emailValid = isEmailValid(email, setFormState);
 
     if (emailValid && password) {
-      showLoader();
+      optionalSetFormState({isLoading: true})
       const response = await sendForm(formState);
 
       if (response.success) {
@@ -105,6 +113,7 @@ const Login = () => {
           ...formState,
           email: "",
           password: "",
+          isLoading: false,
           errorPasswordMessage: "",
           errorEmailMessage: "",
           nameErrorMessage: "",

@@ -32,10 +32,10 @@
 }
 
 .empty-data {
-  display: inline-block;
+  width: 100%;
+  text-align: center;
   margin: 0 auto;
   font-size: 24px;
   color: #fff;
   padding: 20px;
-  border-bottom: 1px solid white;
 }
