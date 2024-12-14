@@ -4,7 +4,7 @@ import AppRoutes from "./AppRoutes";
 import { BrowserRouter } from "react-router-dom";
 import { LoaderProvider } from "./context/loaderContext";
 import { Loader } from "./shared/components/loader/loader";
-import Header from "./pages/header/header";
+import Header from "./blocks/header/header";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
