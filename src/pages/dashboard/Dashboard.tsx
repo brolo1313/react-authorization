@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { localStorageService } from "../../shared/helpers/localStorage";
-import { useLoader } from "../../shared/components/loader/loaderContext";
+import { useLoader } from "../../context/loaderContext";
 import { IUser } from "../../shared/models/usersList";
 import "./dashboard.css";
 

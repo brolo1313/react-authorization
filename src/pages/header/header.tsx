@@ -1,6 +1,6 @@
 // Header.tsx
 import "./Header.css";
-import { useAuth } from "../auth/context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
   const { userSettings, clearUserSettings } = useAuth();

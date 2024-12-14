@@ -1,6 +1,6 @@
 // AuthContext.js
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { IUserSettings } from "../../../shared/models/auth";
+import { IUserSettings } from "../shared/models/auth";
 
 export interface ILoaderContext {
     userSettings: IUserSettings | undefined;
@@ -16,11 +16,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const userSettingsStorageKey: string = "auth";
 
     const updateUserSettings = (settings: IUserSettings) => {
-        setUserSettings(settings);
+        setUserSettings({...settings});
         if (settings) {
             localStorage.setItem(
                 userSettingsStorageKey,
-                JSON.stringify({ userSettings: settings })
+                JSON.stringify(settings)
             );
         } else {
             localStorage.removeItem(userSettingsStorageKey);

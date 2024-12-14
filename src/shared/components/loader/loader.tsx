@@ -1,4 +1,4 @@
-import { useLoader } from "./loaderContext";
+import { useLoader } from "../../../context/loaderContext";
 import "./loader.css";
 
 export const Loader = () => {

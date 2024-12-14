@@ -6,7 +6,7 @@ class LocalStorageService {
   getUserSettings() {
     const userSettingsString = localStorage.getItem(this.userSettingsStorageKey);
     if (userSettingsString) {
-      return { ...JSON.parse(userSettingsString).userSettings };
+      return { ...JSON.parse(userSettingsString) };
     }
     return false;
   }

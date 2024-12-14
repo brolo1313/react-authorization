@@ -3,7 +3,7 @@ import { TextInput } from "../../../shared/components/input/input";
 import { useState } from "react";
 import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 const Login = () => {
   const [formState, setFormState] = useState({

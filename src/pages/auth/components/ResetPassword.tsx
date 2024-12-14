@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TextInput } from "../../../shared/components/input/input";
-import { useLoader } from "../../../shared/components/loader/loaderContext";
+import { useLoader } from "../../../context/loaderContext";
 import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 

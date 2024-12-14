@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import "./input.css";
-import { useLoader } from "../../../shared/components/loader/loaderContext";
+import { useLoader } from "../../../context/loaderContext";
 
 export interface Props {
   value: string;

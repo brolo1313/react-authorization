@@ -3,7 +3,7 @@ import { localStorageService } from "./localStorage";
 
 const isAuthenticated = () => {
   const userSettings =  localStorageService.getUserSettings();
-  return userSettings.accessToken ? true : false;
+  return !!userSettings.accessToken;
 };
 
 const PrivateRoute = ({ element }: { element: JSX.Element }) => {
