@@ -1,65 +1,51 @@
 import { useEffect, useState } from "react";
-import { localStorageService } from "../../shared/helpers/localStorage";
-import { useLoader } from "../../context/loaderContext";
 import { IUser } from "../../shared/models/usersList";
 import "./dashboard.css";
+import { API_URL } from "../../config";
+import { useGetApiData } from "../../hooks/useGetApiData";
 
 function Dashboard() {
   const [usersLists, setUsersListState] = useState<IUser[]>([]);
-  const { showLoader, hideLoader, isLoading } = useLoader();
+  const [plans, setPlans] = useState<any>(null);
 
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const {
+    data: profiles,
+    isLoading: profilesLoading,
+    error: profilesError,
+  } = useGetApiData(`${API_URL}/all-profiles`);
+
+  const {
+    data: plansData,
+    isLoading: plansLoading,
+    error: plansError,
+  } = useGetApiData(`${API_URL}/plans`);
 
   useEffect(() => {
-    getUsers();
-  }, []);
-
-  const getUsers = async () => {
-    showLoader();
-
-    const userSettings = localStorageService.getUserSettings();
-    const accessToken = userSettings ? userSettings?.accessToken : null;
-
-    const headers: HeadersInit = {
-      "Content-Type": "application/json",
-    };
-
-    if (accessToken) {
-      headers["Authorization"] = `Bearer ${accessToken}`;
+    if (profiles) {
+      setUsersListState(profiles);
     }
 
-    try {
-      const response = await fetch(`${apiUrl}/all-profiles`, {
-        method: "GET",
-        headers: headers,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      setUsersListState(data);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error("Fetch error:", error.message);
-        hideLoader();
-      } else {
-        console.error("Unknown error:", error);
-        hideLoader();
-      }
-      throw error;
-    } finally {
-      hideLoader();
+    if (profilesError) {
+      console.error("Error fetching users:", profilesError);
     }
-  };
+  }, [profiles, profilesError]);
+
+  useEffect(() => {
+    if (plansData) {
+      setPlans(plansData);
+    }
+
+    if (plansError) {
+      console.error("Error fetching plans:", plansError);
+    }
+  }, [plansData, plansError]);
+
+  const isLoadingAllData: boolean = !!plansLoading || !!profilesLoading;
 
   return (
     <>
       <section>
-        {/* <h1>Dashboard</h1> */}
-        {!isLoading && usersLists.length? (
+        {!isLoadingAllData && usersLists.length ? (
           <table className="user-table">
             <thead>
               <tr>
@@ -77,7 +63,9 @@ function Dashboard() {
             </tbody>
           </table>
         ) : (
-          <div className="empty-data">Nothing to show</div>
+          <div className="empty-data">
+            {isLoadingAllData ? "Processing" : "No data"}
+          </div>
         )}
       </section>
     </>
