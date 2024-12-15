@@ -37,6 +37,12 @@ const ResetPassword = () => {
     }
   }, [resetPasswordData]);
 
+  useEffect(() => {
+    if (resetPasswordError) {
+     console.log('resetPasswordError', resetPasswordError);
+    }
+  }, [resetPasswordError]);
+
   const handleCreate = async () => {
     const { email } = formState;
     await resetPassword({ email });
@@ -70,24 +76,26 @@ const ResetPassword = () => {
   return (
     <div className="form-container">
       <h2>Reset Password Page</h2>
-      <TextInput
-        type="text"
-        value={email}
-        onChange={handleChange}
-        id="email"
-        label="Email"
-        required
-        error={errorEmailMessage}
-        disabled={isLoading}
-      />
-      <button
-        type="submit"
-        name="action"
-        onClick={onSubmit}
-        disabled={isButtonDisabled}
-      >
-        {isLoading ? `Processing...` : `Reset password`}
-      </button>
+      <form onSubmit={onSubmit}>
+        <TextInput
+          type="text"
+          value={email}
+          onChange={handleChange}
+          id="email"
+          label="Email"
+          required
+          error={errorEmailMessage}
+          disabled={isLoading}
+        />
+        <button
+          type="submit"
+          name="action"
+          disabled={isButtonDisabled}
+        >
+          {isLoading ? `Processing...` : `Reset password`}
+        </button>
+      </form>
+
       <div>
         <Link to="/login">Go to Login</Link>
       </div>

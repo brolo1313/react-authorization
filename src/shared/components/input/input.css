@@ -1,6 +1,7 @@
 .textInput-container {
   position: relative;
   width: 100%;
+  margin-top: 1rem;
 }
 
 .textInput-label {

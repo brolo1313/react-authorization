@@ -42,6 +42,12 @@ const Login = () => {
     }
   }, [loginData]);
 
+  useEffect(() => {
+    if (loginError) {
+      console.log("loginError", loginError);
+    }
+  }, [loginError]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
@@ -94,38 +100,39 @@ const Login = () => {
     <div className="form-container">
       <h2>Login Page</h2>
 
-      <TextInput
-        type="email"
-        value={email}
-        onChange={handleChange}
-        id="email"
-        label="Email"
-        required
-        placeholder="test@example.com"
-        error={errorEmailMessage}
-        disabled={isLoading}
-      />
+      <form onSubmit={onSubmit}>
+        <TextInput
+          type="email"
+          value={email}
+          onChange={handleChange}
+          id="email"
+          label="Email"
+          required
+          placeholder="test@example.com"
+          error={errorEmailMessage}
+          disabled={isLoading}
+        />
 
-      <TextInput
-        type="password"
-        value={password}
-        onChange={handleChange}
-        id="password"
-        required
-        label="Password"
-        isPassword
-        error={errorPasswordMessage}
-        disabled={isLoading}
-      />
+        <TextInput
+          type="password"
+          value={password}
+          onChange={handleChange}
+          id="password"
+          required
+          label="Password"
+          isPassword
+          error={errorPasswordMessage}
+          disabled={isLoading}
+        />
 
-      <button
-        type="submit"
-        name="action"
-        onClick={onSubmit}
-        disabled={isButtonDisabled}
-      >
-        {isLoading ? `Processing...` : `Sing in`}
-      </button>
+        <button
+          type="submit"
+          name="action"
+          disabled={isButtonDisabled}
+        >
+          {isLoading ? `Processing...` : `Sing in`}
+        </button>
+      </form>
 
       <div>
         <Link to="/reset-password">Go to Reset Pass</Link>
