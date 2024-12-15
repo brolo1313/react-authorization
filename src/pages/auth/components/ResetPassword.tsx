@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { TextInput } from "../../../shared/components/input/input";
 import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { optionalSetFormState } from "../../../shared/helpers/useState";
 import { API_URL } from "../../../config";
+import { usePostApiData } from "../../../hooks/usePostApiData";
 
 const ResetPassword = () => {
   const [formState, setFormState] = useState<Partial<IFormState>>({
@@ -16,6 +17,30 @@ const ResetPassword = () => {
   const { email, errorEmailMessage, isLoading } = formState;
 
   const navigateToLogin = useNavigate();
+
+  const {
+    data: resetPasswordData,
+    error: resetPasswordError,
+    triggerFetch: resetPassword,
+  } = usePostApiData(`${API_URL}/reset-password`, "POST");
+
+  useEffect(() => {
+    if (resetPasswordData) {
+      setFormState({
+        ...formState,
+        email: "",
+        isLoading: false,
+        errorEmailMessage: "",
+      });
+
+      navigateToLogin("/login");
+    }
+  }, [resetPasswordData]);
+
+  const handleCreate = async () => {
+    const { email } = formState;
+    await resetPassword({ email });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -30,56 +55,13 @@ const ResetPassword = () => {
     }
   };
 
-  const sendForm = async (formState: Partial<IFormState>) => {
-    const { email } = formState;
-    try {
-      const response = await fetch(`${API_URL}/reset-password`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`);
-      }
-
-      const data = await response.json();
-      return {
-        result: { ...data },
-        success: true,
-      };
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error("Fetch error:", error.message);
-         optionalSetFormState({isLoading: false}, setFormState)
-      } else {
-        console.error("Unknown error:", error);
-        optionalSetFormState({isLoading: false}, setFormState)
-      }
-      throw error;
-    }
-  };
-
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
     if (!errorEmailMessage && email) {
-      optionalSetFormState({isLoading: true}, setFormState)
-      const response = await sendForm(formState);
-
-      if (response.success) {
-        setFormState({
-          ...formState,
-          email: "",
-          isLoading: false,
-          errorEmailMessage: "",
-        });
-
-        navigateToLogin("/login");
-      }
+      optionalSetFormState({ isLoading: true }, setFormState);
+      await handleCreate();
+      optionalSetFormState({ isLoading: false }, setFormState);
     }
   };
 

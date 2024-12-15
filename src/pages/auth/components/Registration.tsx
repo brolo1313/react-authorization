@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { TextInput } from "../../../shared/components/input/input";
 import {
   isEmailValid,
@@ -8,6 +8,8 @@ import {
   isPasswordValid,
 } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
+import { usePostApiData } from "../../../hooks/usePostApiData";
+import { API_URL } from "../../../config";
 
 const validators: any = {
   name: isNameValid,
@@ -45,14 +47,42 @@ const Registration = () => {
     nameLengthError,
   } = formState;
 
-  const sendForm = () => {
-    return fetch("https://node-implementation.vercel.app/api/all-profiles", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
+  const {
+    data: registrationData,
+    error: registrationError,
+    triggerFetch: registration,
+  } = usePostApiData(`${API_URL}/sign-up`, "POST");
+
+  const navigateToLogin = useNavigate();
+
+  useEffect(() => {
+    if (registrationData) {
+      setFormState({
+        name: "",
+        email: "",
+        password: "",
+        passwordConfirmation: "",
+        isLoading: false,
+        errorPasswordMessage: "",
+        errorPasswordConfirmation: "",
+        errorEmailMessage: "",
+        passwordLength: "",
+        nameErrorMessage: "",
+        nameLengthError: "",
+      });
+
+      navigateToLogin("/login");
+    }
+  }, [registrationData]);
+
+  useEffect(() => {
+    if (registrationError) {
+      console.log("registrationError", registrationError.message);
+    }
+  }, [registrationError]);
+
+  const handleCreateUser = async () => {
+    await registration({ ...formState, username: name });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,24 +111,10 @@ const Registration = () => {
       password
     );
 
-    //passwordValid &&
     if (emailValid && nameValid && passwordValid && passwordConfirmationValid) {
-      setFormState((prevState) => ({ ...prevState, loading: true }));
-      const response = await sendForm();
-      setFormState((prevState) => ({ ...prevState, loading: false }));
-
-      if (response.ok) {
-        setFormState({
-          ...formState,
-          email: "",
-          name: "",
-          password: "",
-          passwordConfirmation: "",
-          errorPasswordMessage: "",
-          nameLengthError: "",
-          nameErrorMessage: "",
-        });
-      }
+      setFormState((prevState) => ({ ...prevState, isLoading: true }));
+      await handleCreateUser();
+      setFormState((prevState) => ({ ...prevState, isLoading: false }));
     }
   };
 
@@ -160,7 +176,7 @@ const Registration = () => {
         name="action"
         disabled={isButtonDisabled} // Disable button if there are errors
       >
-        {isLoading ? "Loading..." : "Sign Up"}
+        {isLoading ? "Processing..." : "Sign Up"}
       </button>
 
       <div>

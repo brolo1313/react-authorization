@@ -1,11 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { TextInput } from "../../../shared/components/input/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { useAuth } from "../../../context/AuthContext";
 import { optionalSetFormState } from "../../../shared/helpers/useState";
 import { API_URL } from "../../../config";
+import { usePostApiData } from "../../../hooks/usePostApiData";
 
 const Login = () => {
   const [formState, setFormState] = useState<Partial<IFormState>>({
@@ -26,8 +27,20 @@ const Login = () => {
   } = formState;
 
   const { updateUserSettings } = useAuth();
-
   const navigateToDashboard = useNavigate();
+
+  const {
+    data: loginData,
+    error: loginError,
+    triggerFetch: createProfile,
+  } = usePostApiData(`${API_URL}/sign-in`, "POST");
+
+  useEffect(() => {
+    if (loginData) {
+      updateUserSettings(loginData);
+      navigateToDashboard("/dashboard");
+    }
+  }, [loginData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -57,38 +70,9 @@ const Login = () => {
     }
   };
 
-  const sendForm = async (formState: Partial<IFormState>) => {
+  const handleCreate = async () => {
     const { email, password } = formState;
-    try {
-      const response = await fetch(`${API_URL }/sign-in`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server responded with status ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      return {
-        result: { ...data },
-        success: true,
-      };
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error("Fetch error:", error.message);
-        optionalSetFormState({isLoading: false}, setFormState)
-      } else {
-        console.error("Unknown error:", error);
-        optionalSetFormState({isLoading: false}, setFormState)
-      }
-      throw error; // Re-throw the error so that we can handle it in onSubmit
-    }
+    await createProfile({ email, password });
   };
 
   const onSubmit = async (e: any) => {
@@ -97,24 +81,9 @@ const Login = () => {
     const emailValid = isEmailValid(email, setFormState);
 
     if (emailValid && password) {
-      optionalSetFormState({isLoading: true}, setFormState)
-      const response = await sendForm(formState);
-
-      if (response.success) {
-        updateUserSettings(response.result);
-
-        setFormState({
-          ...formState,
-          email: "",
-          password: "",
-          isLoading: false,
-          errorPasswordMessage: "",
-          errorEmailMessage: "",
-          nameErrorMessage: "",
-        });
-
-        navigateToDashboard("/dashboard");
-      }
+      optionalSetFormState({ isLoading: true }, setFormState);
+      await handleCreate();
+      optionalSetFormState({ isLoading: false }, setFormState);
     }
   };
 

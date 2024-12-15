@@ -40,7 +40,7 @@ function Dashboard() {
     }
   }, [plansData, plansError]);
 
-  const isLoadingAllData: boolean = !!plansLoading || !!profilesLoading;
+  const isLoadingAllData: boolean = !!plansLoading && !!profilesLoading;
 
   return (
     <>

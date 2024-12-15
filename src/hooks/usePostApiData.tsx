@@ -12,6 +12,10 @@ export function usePostApiData<T>(apiEndpoint: string, method: HttpMethod) {
   const userSettings = localStorageService.getUserSettings();
   const accessToken = userSettings?.accessToken || null;
 
+  const authPath = ["sign-in", "reset-password", "sign-up"];
+  const match = apiEndpoint.match(/\/api\/(.*)/);
+  const path = match![1];
+
   const headers: HeadersInit = {
     "Content-Type": "application/json",
     ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
@@ -19,7 +23,9 @@ export function usePostApiData<T>(apiEndpoint: string, method: HttpMethod) {
 
   const triggerFetch = useCallback(
     async (body?: T) => {
-      showLoader();
+      if (!authPath.includes(path)) {
+        showLoader();
+      }
       try {
         const response = await fetch(apiEndpoint, {
           method,
@@ -28,7 +34,8 @@ export function usePostApiData<T>(apiEndpoint: string, method: HttpMethod) {
         });
 
         if (!response.ok) {
-          throw new Error(`Error: ${response.status} - ${response.statusText}`);
+          const errorData = await response.json();
+          throw new Error(errorData.message || `Error: ${response.status}`);
         }
 
         const result = await response.json();
@@ -36,7 +43,9 @@ export function usePostApiData<T>(apiEndpoint: string, method: HttpMethod) {
       } catch (err: any) {
         setError(err);
       } finally {
-        hideLoader();
+        if (!authPath.includes(path)) {
+          hideLoader();
+        }
       }
     },
     [apiEndpoint, method]
