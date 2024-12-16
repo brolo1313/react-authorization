@@ -4,7 +4,6 @@ import { TextInput } from "../../../shared/components/input/input";
 import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { optionalSetFormState } from "../../../shared/helpers/useState";
-import { API_URL } from "../../../config";
 import { usePostApiData } from "../../../hooks/usePostApiData";
 
 const ResetPassword = () => {
@@ -22,7 +21,7 @@ const ResetPassword = () => {
     data: resetPasswordData,
     error: resetPasswordError,
     triggerFetch: resetPassword,
-  } = usePostApiData(`${API_URL}/reset-password`, "POST");
+  } = usePostApiData(`reset-password`, "POST");
 
   useEffect(() => {
     if (resetPasswordData) {

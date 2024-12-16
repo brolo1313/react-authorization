@@ -9,7 +9,6 @@ import {
 } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { usePostApiData } from "../../../hooks/usePostApiData";
-import { API_URL } from "../../../config";
 
 const validators: any = {
   name: isNameValid,
@@ -51,7 +50,7 @@ const Registration = () => {
     data: registrationData,
     error: registrationError,
     triggerFetch: registration,
-  } = usePostApiData(`${API_URL}/sign-up`, "POST");
+  } = usePostApiData(`sign-up`, "POST");
 
   const navigateToLogin = useNavigate();
 
