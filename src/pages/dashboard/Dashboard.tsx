@@ -3,6 +3,7 @@ import { IUser } from "../../shared/models/usersList";
 import "./dashboard.css";
 import { useGetApiData } from "../../hooks/useGetApiData";
 import { useLoader } from "../../context/loaderContext";
+import UserList from "../../components/UsersList";
 
 function Dashboard() {
   const [usersLists, setUsersListState] = useState<IUser[]>([]);
@@ -35,36 +36,12 @@ function Dashboard() {
   }, [plansData, plansError]);
 
   return (
-    <>
-      <section>
-        {!isLoading && usersLists.length ? (
-          <table className="user-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Role</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usersLists.map((user, index) => (
-                <tr key={index}>
-                  <td>{user.name}</td>
-                  <td>{user.role}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <div className="empty-data">
-            {isLoading
-              ? "Processing"
-              : usersLists && usersLists.length === 0
-              ? "No data"
-              : ""}
-          </div>
-        )}
-      </section>
-    </>
+    <section>
+      <UserList
+        users={usersLists}
+        isLoading={isLoading}
+      />
+    </section>
   );
 }
 

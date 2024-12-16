@@ -1,15 +1,16 @@
 // Header.tsx
 import "./Header.css";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { userSettings, clearUserSettings } = useAuth();
-
+  const navigateToLogin = useNavigate();
   if (!userSettings) return null;
 
   const logOut = () => {
     clearUserSettings();
-    window.location.href = "/login";
+    navigateToLogin("/login");
   };
 
   return (
