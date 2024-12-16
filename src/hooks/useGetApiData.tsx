@@ -1,33 +1,17 @@
 import { useEffect, useState, useCallback } from "react";
+import { fetchInterceptor } from "../interceptor/interceptor";
 import { useLoader } from "../context/loaderContext";
-import { localStorageService } from "../shared/helpers/localStorage";
 
 export function useGetApiData(apiEndpoint: string) {
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<Error | null>(null);
-  const { showLoader, hideLoader, isLoading } = useLoader();
-
-  const userSettings = localStorageService.getUserSettings();
-  const accessToken = userSettings?.accessToken || null;
-
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-    ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
-  };
+  const { showLoader, hideLoader } = useLoader();
 
   const fetchData = useCallback(async () => {
-    showLoader();
     try {
-      const response = await fetch(apiEndpoint, {
-        method: "GET",
-        headers,
-      });
+      showLoader();
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
-
-      const result = await response.json();
+      const result = await fetchInterceptor(apiEndpoint, "GET");
       setData(result);
     } catch (err: any) {
       setError(err);
@@ -40,5 +24,5 @@ export function useGetApiData(apiEndpoint: string) {
     fetchData();
   }, [fetchData]);
 
-  return { data, error, refetch: fetchData, isLoading };
+  return { data, error, refetch: fetchData };
 }

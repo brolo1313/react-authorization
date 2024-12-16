@@ -1,24 +1,23 @@
 import { useEffect, useState } from "react";
 import { IUser } from "../../shared/models/usersList";
 import "./dashboard.css";
-import { API_URL } from "../../config";
 import { useGetApiData } from "../../hooks/useGetApiData";
+import { useLoader } from "../../context/loaderContext";
 
 function Dashboard() {
   const [usersLists, setUsersListState] = useState<IUser[]>([]);
   const [plans, setPlans] = useState<any>(null);
-
+   const { isLoading } = useLoader();
+   
   const {
     data: profiles,
-    isLoading: profilesLoading,
     error: profilesError,
-  } = useGetApiData(`${API_URL}/all-profiles`);
+  } = useGetApiData(`all-profiles`);
 
   const {
     data: plansData,
-    isLoading: plansLoading,
     error: plansError,
-  } = useGetApiData(`${API_URL}/plans`);
+  } = useGetApiData(`plans`);
 
   useEffect(() => {
     if (profiles) {
@@ -40,12 +39,10 @@ function Dashboard() {
     }
   }, [plansData, plansError]);
 
-  const isLoadingAllData: boolean = !!plansLoading && !!profilesLoading;
-
   return (
     <>
       <section>
-        {!isLoadingAllData && usersLists.length ? (
+        {!isLoading && usersLists.length ? (
           <table className="user-table">
             <thead>
               <tr>
@@ -64,7 +61,7 @@ function Dashboard() {
           </table>
         ) : (
           <div className="empty-data">
-            {isLoadingAllData ? "Processing" : "No data"}
+            {isLoading ? "Processing" : "No data"}
           </div>
         )}
       </section>

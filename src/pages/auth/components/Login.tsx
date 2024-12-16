@@ -5,7 +5,6 @@ import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { useAuth } from "../../../context/AuthContext";
 import { optionalSetFormState } from "../../../shared/helpers/useState";
-import { API_URL } from "../../../config";
 import { usePostApiData } from "../../../hooks/usePostApiData";
 
 const Login = () => {
@@ -33,7 +32,7 @@ const Login = () => {
     data: loginData,
     error: loginError,
     triggerFetch: createProfile,
-  } = usePostApiData(`${API_URL}/sign-in`, "POST");
+  } = usePostApiData('sign-in', "POST");
 
   useEffect(() => {
     if (loginData) {
