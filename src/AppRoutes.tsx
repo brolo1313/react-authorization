@@ -6,42 +6,43 @@ import ResetPassword from "./pages/auth/components/ResetPassword";
 import PrivateRoute from "./shared/helpers/privateRoute";
 import Dashboard from "./pages/dashboard/Dashboard";
 import { useAuth } from "./context/AuthContext";
-import { IUserSettings } from "./shared/models/auth";
+import { redirectFromAuthRoutes } from "./shared/helpers/redirectUtils";
 
 const AppRoutes = () => {
   const { userSettings } = useAuth();
-  const redirectFromAuthRoutes = (
-    userSettings: IUserSettings | undefined,
-    finiteElement: JSX.Element
-  ) => {
-    return userSettings?.accessToken ? (
-      <Navigate to="/dashboard" />
-    ) : (
-      finiteElement
-    );
-  };
+
+  const routes = [
+    {
+      path: "/login",
+      element: redirectFromAuthRoutes(userSettings, <Login />),
+    },
+    {
+      path: "/registration",
+      element: redirectFromAuthRoutes(userSettings, <Registration />),
+    },
+    {
+      path: "/reset-password",
+      element: redirectFromAuthRoutes(userSettings, <ResetPassword />),
+    },
+    {
+      path: "/",
+      element: <Navigate to="/login" />,
+    },
+    {
+      path: "/dashboard",
+      element: <PrivateRoute element={<Dashboard />} />,
+    },
+  ];
+
   return (
     <Routes>
-      <Route
-        path="/login"
-        element={redirectFromAuthRoutes(userSettings, <Login />)}
-      />
-      <Route
-        path="/registration"
-        element={redirectFromAuthRoutes(userSettings, <Registration />)}
-      />
-      <Route
-        path="/reset-password"
-        element={redirectFromAuthRoutes(userSettings, <ResetPassword />)}
-      />
-      <Route
-        path="/"
-        element={<Navigate to="/login" />}
-      />
-      <Route
-        path="/dashboard"
-        element={<PrivateRoute element={<Dashboard />} />}
-      />
+      {routes.map(({ path, element }) => (
+        <Route
+          key={path}
+          path={path}
+          element={element}
+        />
+      ))}
     </Routes>
   );
 };
