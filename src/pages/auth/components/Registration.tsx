@@ -129,59 +129,61 @@ const Registration = () => {
     !!nameErrorMessage;
 
   return (
-    <div className="form-container">
-      <h2>Registration Page</h2>
-      <form onSubmit={onSubmit}>
-        <TextInput
-          type="text"
-          value={name}
-          onChange={handleChange}
-          id="name"
-          label="Name"
-          required
-          error={nameLengthError?.length ? nameLengthError : nameErrorMessage}
-        />
-        <TextInput
-          type="text"
-          value={email}
-          onChange={handleChange}
-          id="email"
-          label="Email"
-          required
-          error={errorEmailMessage}
-        />
-        <TextInput
-          type="password"
-          value={password}
-          onChange={handleChange}
-          id="password"
-          required
-          label="Password"
-          isPassword
-          error={errorPasswordMessage}
-        />
-        <TextInput
-          type="password"
-          value={passwordConfirmation}
-          onChange={handleChange}
-          id="passwordConfirmation"
-          required
-          label="Confirm password"
-          isPassword
-          error={errorPasswordConfirmation}
-          disabled={!password}
-        />
-        <button
-          type="submit"
-          name="action"
-          disabled={isButtonDisabled} // Disable button if there are errors
-        >
-          {isLoading ? "Processing..." : "Sign Up"}
-        </button>
-      </form>
+    <div className="auth-container">
+      <div className="form-container">
+        <h2>Registration Page</h2>
+        <form onSubmit={onSubmit}>
+          <TextInput
+            type="text"
+            value={name}
+            onChange={handleChange}
+            id="name"
+            label="Name"
+            required
+            error={nameLengthError?.length ? nameLengthError : nameErrorMessage}
+          />
+          <TextInput
+            type="text"
+            value={email}
+            onChange={handleChange}
+            id="email"
+            label="Email"
+            required
+            error={errorEmailMessage}
+          />
+          <TextInput
+            type="password"
+            value={password}
+            onChange={handleChange}
+            id="password"
+            required
+            label="Password"
+            isPassword
+            error={errorPasswordMessage}
+          />
+          <TextInput
+            type="password"
+            value={passwordConfirmation}
+            onChange={handleChange}
+            id="passwordConfirmation"
+            required
+            label="Confirm password"
+            isPassword
+            error={errorPasswordConfirmation}
+            disabled={!password}
+          />
+          <button
+            type="submit"
+            name="action"
+            disabled={isButtonDisabled} // Disable button if there are errors
+          >
+            {isLoading ? "Processing..." : "Sign Up"}
+          </button>
+        </form>
 
-      <div>
-        <Link to="/login">Go to Login</Link>
+        <div>
+          <Link to="/login">Go to Login</Link>
+        </div>
       </div>
     </div>
   );

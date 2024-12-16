@@ -32,7 +32,7 @@ const Login = () => {
     data: loginData,
     error: loginError,
     triggerFetch: createProfile,
-  } = usePostApiData('sign-in', "POST");
+  } = usePostApiData("sign-in", "POST");
 
   useEffect(() => {
     if (loginData) {
@@ -96,48 +96,50 @@ const Login = () => {
     isLoading || !!errorEmailMessage || !!errorPasswordMessage || !password;
 
   return (
-    <div className="form-container">
-      <h2>Login Page</h2>
+    <div className="auth-container">
+      <div className="form-container">
+        <h2>Login Page</h2>
 
-      <form onSubmit={onSubmit}>
-        <TextInput
-          type="email"
-          value={email}
-          onChange={handleChange}
-          id="email"
-          label="Email"
-          required
-          placeholder="test@example.com"
-          error={errorEmailMessage}
-          disabled={isLoading}
-        />
+        <form onSubmit={onSubmit}>
+          <TextInput
+            type="email"
+            value={email}
+            onChange={handleChange}
+            id="email"
+            label="Email"
+            required
+            placeholder="test@example.com"
+            error={errorEmailMessage}
+            disabled={isLoading}
+          />
 
-        <TextInput
-          type="password"
-          value={password}
-          onChange={handleChange}
-          id="password"
-          required
-          label="Password"
-          isPassword
-          error={errorPasswordMessage}
-          disabled={isLoading}
-        />
+          <TextInput
+            type="password"
+            value={password}
+            onChange={handleChange}
+            id="password"
+            required
+            label="Password"
+            isPassword
+            error={errorPasswordMessage}
+            disabled={isLoading}
+          />
 
-        <button
-          type="submit"
-          name="action"
-          disabled={isButtonDisabled}
-        >
-          {isLoading ? `Processing...` : `Sing in`}
-        </button>
-      </form>
+          <button
+            type="submit"
+            name="action"
+            disabled={isButtonDisabled}
+          >
+            {isLoading ? `Processing...` : `Sing in`}
+          </button>
+        </form>
 
-      <div>
-        <Link to="/reset-password">Go to Reset Pass</Link>
-      </div>
-      <div>
-        <Link to="/registration">Go to Registration</Link>
+        <div>
+          <Link to="/reset-password">Go to Reset Pass</Link>
+        </div>
+        <div>
+          <Link to="/registration">Go to Registration</Link>
+        </div>
       </div>
     </div>
   );

@@ -7,17 +7,12 @@ import { useLoader } from "../../context/loaderContext";
 function Dashboard() {
   const [usersLists, setUsersListState] = useState<IUser[]>([]);
   const [plans, setPlans] = useState<any>(null);
-   const { isLoading } = useLoader();
-   
-  const {
-    data: profiles,
-    error: profilesError,
-  } = useGetApiData(`all-profiles`);
+  const { isLoading } = useLoader();
 
-  const {
-    data: plansData,
-    error: plansError,
-  } = useGetApiData(`plans`);
+  const { data: profiles, error: profilesError } =
+    useGetApiData(`all-profiles`);
+
+  const { data: plansData, error: plansError } = useGetApiData(`plans`);
 
   useEffect(() => {
     if (profiles) {
@@ -61,7 +56,11 @@ function Dashboard() {
           </table>
         ) : (
           <div className="empty-data">
-            {isLoading ? "Processing" : "No data"}
+            {isLoading
+              ? "Processing"
+              : usersLists && usersLists.length === 0
+              ? "No data"
+              : ""}
           </div>
         )}
       </section>

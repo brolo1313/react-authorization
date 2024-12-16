@@ -39,7 +39,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (resetPasswordError) {
-     console.log('resetPasswordError', resetPasswordError);
+      console.log("resetPasswordError", resetPasswordError);
     }
   }, [resetPasswordError]);
 
@@ -74,30 +74,32 @@ const ResetPassword = () => {
   const isButtonDisabled = isLoading || !!errorEmailMessage || !email;
 
   return (
-    <div className="form-container">
-      <h2>Reset Password Page</h2>
-      <form onSubmit={onSubmit}>
-        <TextInput
-          type="text"
-          value={email}
-          onChange={handleChange}
-          id="email"
-          label="Email"
-          required
-          error={errorEmailMessage}
-          disabled={isLoading}
-        />
-        <button
-          type="submit"
-          name="action"
-          disabled={isButtonDisabled}
-        >
-          {isLoading ? `Processing...` : `Reset password`}
-        </button>
-      </form>
+    <div className="auth-container">
+      <div className="form-container">
+        <h2>Reset Password Page</h2>
+        <form onSubmit={onSubmit}>
+          <TextInput
+            type="text"
+            value={email}
+            onChange={handleChange}
+            id="email"
+            label="Email"
+            required
+            error={errorEmailMessage}
+            disabled={isLoading}
+          />
+          <button
+            type="submit"
+            name="action"
+            disabled={isButtonDisabled}
+          >
+            {isLoading ? `Processing...` : `Reset password`}
+          </button>
+        </form>
 
-      <div>
-        <Link to="/login">Go to Login</Link>
+        <div>
+          <Link to="/login">Go to Login</Link>
+        </div>
       </div>
     </div>
   );

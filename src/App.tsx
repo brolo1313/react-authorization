@@ -11,10 +11,10 @@ function App() {
   return (
     <AuthProvider>
       <LoaderProvider>
-        <Header />
         <BrowserRouter>
           <div className="main">
             <Loader />
+            <Header />
             <AppRoutes />
           </div>
         </BrowserRouter>
