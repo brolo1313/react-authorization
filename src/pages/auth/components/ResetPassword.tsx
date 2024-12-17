@@ -5,6 +5,7 @@ import { isEmailValid } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { optionalSetFormState } from "../../../shared/helpers/useState";
 import { usePostApiData } from "../../../hooks/usePostApiData";
+import { ShowToasterSuccess } from "../../../shared/helpers/showToaster";
 
 const ResetPassword = () => {
   const [formState, setFormState] = useState<Partial<IFormState>>({
@@ -32,6 +33,7 @@ const ResetPassword = () => {
         errorEmailMessage: "",
       });
 
+      ShowToasterSuccess({message:resetPasswordData.message})
       navigateToLogin("/login");
     }
   }, [resetPasswordData]);

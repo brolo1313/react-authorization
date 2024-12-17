@@ -9,6 +9,7 @@ import {
 } from "../../../shared/helpers/validation";
 import { IFormState } from "../../../shared/models/auth";
 import { usePostApiData } from "../../../hooks/usePostApiData";
+import { ShowToasterSuccess } from "../../../shared/helpers/showToaster";
 
 const validators: any = {
   name: isNameValid,
@@ -70,6 +71,7 @@ const Registration = () => {
         nameLengthError: "",
       });
 
+      ShowToasterSuccess({message:`Your email: ${registrationData.email}`})
       navigateToLogin("/login");
     }
   }, [registrationData]);

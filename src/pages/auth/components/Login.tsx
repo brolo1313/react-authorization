@@ -6,6 +6,7 @@ import { IFormState } from "../../../shared/models/auth";
 import { useAuth } from "../../../context/AuthContext";
 import { optionalSetFormState } from "../../../shared/helpers/useState";
 import { usePostApiData } from "../../../hooks/usePostApiData";
+import { ShowToasterSuccess } from "../../../shared/helpers/showToaster";
 
 const Login = () => {
   const [formState, setFormState] = useState<Partial<IFormState>>({
@@ -37,6 +38,7 @@ const Login = () => {
   useEffect(() => {
     if (loginData) {
       updateUserSettings(loginData);
+      ShowToasterSuccess({message: "You are now signed in"})
       navigateToDashboard("/dashboard");
     }
   }, [loginData]);
