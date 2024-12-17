@@ -3,7 +3,7 @@ import { IUser } from "../../shared/models/usersList";
 import "./dashboard.css";
 import { useGetApiData } from "../../hooks/useGetApiData";
 import { useLoader } from "../../context/loaderContext";
-import UserList from "../../components/UsersList";
+import UserList from "../../components/usersList/UsersList";
 
 function Dashboard() {
   const [usersLists, setUsersListState] = useState<IUser[]>([]);
