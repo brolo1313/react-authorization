@@ -24,5 +24,5 @@ export function useGetApiData(apiEndpoint: string) {
     fetchData();
   }, [fetchData]);
 
-  return { data, error, refetch: fetchData };
+  return { data, error, refetch: fetchData, setError };
 }

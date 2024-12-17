@@ -10,14 +10,22 @@ function Dashboard() {
   const [plans, setPlans] = useState<any>(null);
   const { isLoading } = useLoader();
 
-  const { data: profiles, error: profilesError } =
-    useGetApiData(`all-profiles`);
+  const {
+    data: profiles,
+    error: profilesError,
+    setError: setProfilesError,
+  } = useGetApiData(`all-profiles`);
 
-  const { data: plansData, error: plansError } = useGetApiData(`plans`);
+  const {
+    data: plansData,
+    error: plansError,
+    setError: setPlansError,
+  } = useGetApiData(`plans`);
 
   useEffect(() => {
     if (profiles) {
       setUsersListState(profiles);
+      setProfilesError(null);
     }
 
     if (profilesError) {
@@ -28,6 +36,7 @@ function Dashboard() {
   useEffect(() => {
     if (plansData) {
       setPlans(plansData);
+      setPlansError(null);
     }
 
     if (plansError) {

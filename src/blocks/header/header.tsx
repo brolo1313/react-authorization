@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <>
-      {userSettings ? (
+      {userSettings.accessToken ? (
         <header className="app-header">
           <div style={{ display: "flex", justifyContent: "end" }}>
             <div
