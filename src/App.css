@@ -26,7 +26,10 @@ section {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  row-gap: 50px;
   height: 100vh;
+
   background-color: rgba(0, 0, 0, 0.1);
 }
 

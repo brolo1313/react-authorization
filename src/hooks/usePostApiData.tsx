@@ -9,7 +9,7 @@ export function usePostApiData<T>(apiEndpoint: string, method: HttpMethod) {
   const [error, setError] = useState<Error | null>(null);
   const { showLoader, hideLoader } = useLoader();
 
-  const authPath = ["sign-in", "reset-password", "sign-up"];
+  const authPath = ["sign-in", "reset-password", "sign-up", "auth/google/callback"];
 
   const triggerFetch = useCallback(
     async (data?: T) => {

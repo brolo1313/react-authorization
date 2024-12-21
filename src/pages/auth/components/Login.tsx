@@ -58,22 +58,26 @@ const Login = () => {
         isSocial: true,
       };
       updateUserSettings(userData);
+      optionalSetFormState({ isLoading: false }, setFormState);
       ShowToasterSuccess({ message: "You are now signed in" });
       navigateToDashboard("/dashboard");
     }
   }, [googleOAuthData]);
 
   useEffect(() => {
-    if (loginError) {
-      console.log("loginError", loginError);
+    if (loginError || googleOAuthError) {
+      optionalSetFormState({ isLoading: false }, setFormState);
+      console.log("Error occurred:", loginError || googleOAuthError);
     }
-  }, [loginError]);
+  }, [loginError, googleOAuthError]);
 
   const handleOAuthResponse = async (credentialResponse: {
     clientId: string;
     credential: string;
     select_by: string;
   }) => {
+    optionalSetFormState({ isLoading: true }, setFormState);
+
     const { credential } = credentialResponse;
     const { email, family_name, given_name, name, picture } = parseJwt(
       credential as string
@@ -141,6 +145,13 @@ const Login = () => {
   return (
     <div className="auth-container">
       <GoogleLogin
+        text="signin"
+        locale="en"
+        type="standard"
+        size="large"
+        theme="filled_black"
+        width="240px"
+        auto_select={false}
         onSuccess={async (credentialResponse) =>
           handleOAuthResponse(
             credentialResponse as {
@@ -154,6 +165,7 @@ const Login = () => {
           console.log("Login Failed");
         }}
       />
+
       <div className={`form-container ${isLoading ? "loading" : ""}`}>
         <h2>Login Page</h2>
 
