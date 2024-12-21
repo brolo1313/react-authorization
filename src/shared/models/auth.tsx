@@ -20,4 +20,5 @@ export interface IFormState {
     expiresIn: number;
     id: string;
     username: string;
+    isSocial? : boolean;
   }

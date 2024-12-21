@@ -8,6 +8,7 @@ import { optionalSetFormState } from "../../../shared/helpers/useState";
 import { usePostApiData } from "../../../hooks/usePostApiData";
 import { ShowToasterSuccess } from "../../../shared/helpers/showToaster";
 import { GoogleLogin } from "@react-oauth/google";
+import { parseJwt } from "../../../shared/helpers/common";
 
 const Login = () => {
   const [formState, setFormState] = useState<Partial<IFormState>>({
@@ -52,7 +53,11 @@ const Login = () => {
 
   useEffect(() => {
     if (googleOAuthData) {
-      updateUserSettings(googleOAuthData);
+      const userData = {
+        ...googleOAuthData,
+        isSocial: true,
+      };
+      updateUserSettings(userData);
       ShowToasterSuccess({ message: "You are now signed in" });
       navigateToDashboard("/dashboard");
     }
@@ -60,10 +65,31 @@ const Login = () => {
 
   useEffect(() => {
     if (loginError) {
-      // console.log("loginError", loginError);
+      console.log("loginError", loginError);
     }
   }, [loginError]);
 
+  const handleOAuthResponse = async (credentialResponse: {
+    clientId: string;
+    credential: string;
+    select_by: string;
+  }) => {
+    const { credential } = credentialResponse;
+    const { email, family_name, given_name, name, picture } = parseJwt(
+      credential as string
+    );
+
+    const dataForServer = {
+      email,
+      firstName: family_name,
+      idToken: credential,
+      lastName: given_name,
+      name,
+      photoUrl: picture,
+      provider: "GOOGLE",
+    };
+    await googleOAuthProfile(dataForServer);
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
@@ -112,52 +138,22 @@ const Login = () => {
   const isButtonDisabled =
     isLoading || !!errorEmailMessage || !!errorPasswordMessage || !password;
 
-  // Функція для декодування Base64Url
-  const base64UrlDecode = (base64Url: string) => {
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const decoded = atob(base64); // Декодування з Base64
-    return JSON.parse(decoded); // Перетворення на об'єкт JSON
-  };
-
-  // Функція для парсингу JWT
-  const parseJwt = (token: string) => {
-    const parts = token.split(".");
-    if (parts.length !== 3) {
-      throw new Error("Invalid token format");
-    }
-
-    const payload = base64UrlDecode(parts[1]); // Витягуємо payload
-    return payload;
-  };
-
   return (
     <div className="auth-container">
       <GoogleLogin
-        onSuccess={async (credentialResponse) => {
-          const { credential } = credentialResponse;
-          console.log("credentialResponse", credentialResponse);
-          const { email, family_name, given_name, name, picture } = parseJwt(
-            credential as string
-          );
-
-          const dataForServer = {
-            email,
-            firstName: family_name,
-            // id:,
-            idToken: credential,
-            lastName: given_name,
-            name,
-            photoUrl: picture,
-            provider: "GOOGLE",
-          };
-          console.log(dataForServer);
-          await googleOAuthProfile(dataForServer);
-        }}
+        onSuccess={async (credentialResponse) =>
+          handleOAuthResponse(
+            credentialResponse as {
+              clientId: string;
+              credential: string;
+              select_by: string;
+            }
+          )
+        }
         onError={() => {
           console.log("Login Failed");
         }}
       />
-      ;
       <div className={`form-container ${isLoading ? "loading" : ""}`}>
         <h2>Login Page</h2>
 

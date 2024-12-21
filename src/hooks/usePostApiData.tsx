@@ -17,7 +17,7 @@ export function usePostApiData<T>(apiEndpoint: string, method: HttpMethod) {
         showLoader();
       }
       try {
-        const response = await fetchInterceptor(apiEndpoint, "POST", data);
+        const response = await fetchInterceptor(apiEndpoint, method, data);
 
         setData(response);
       } catch (err: any) {
