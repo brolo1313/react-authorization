@@ -7,6 +7,7 @@ import { Loader } from "./shared/components/loader/loader";
 import Header from "./blocks/header/header";
 import { AuthProvider } from "./context/AuthContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Footer from "./blocks/footer/footers";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
               <Loader />
               <Header />
               <AppRoutes />
+              <Footer />
             </div>
           </BrowserRouter>
         </LoaderProvider>
