@@ -20,11 +20,10 @@
 }
 
 .card:hover {
-  transform: scale(1.05); /* Легка анімація при наведенні */
+  transform: scale(1.05);
 }
 
 /* User Card */
-/* UserCard.css */
 .user-card {
   background: #333;
   color: white;

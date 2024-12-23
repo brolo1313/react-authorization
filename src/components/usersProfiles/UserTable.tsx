@@ -1,4 +1,3 @@
-// src/components/UserList/UserTable.tsx
 import React from 'react';
 
 interface UserTableProps {

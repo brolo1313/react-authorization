@@ -1,4 +1,3 @@
-// src/components/UserList/UserList.tsx
 import React from "react";
 import { IUser } from "../../shared/models/usersList";
 import EmptyData from "../EmptyData";

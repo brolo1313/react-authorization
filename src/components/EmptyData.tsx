@@ -3,12 +3,12 @@ interface UserListProps {
   isLoading: boolean;
 }
 
-const EmptyData: React.FC<UserListProps> = ({data, isLoading}) => {
-  return (
-    <div className="empty-data">
-      {isLoading ? "Processing" : data && data.length === 0 ? "No data" : ""}
-    </div>
-  );
+const EmptyData: React.FC<UserListProps> = ({ data, isLoading }) => {
+  if (isLoading || data?.length > 0) {
+    return null;
+  }
+
+  return <div className="empty-data">No data</div>;
 };
 
 export default EmptyData;

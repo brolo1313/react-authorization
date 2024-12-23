@@ -2,7 +2,7 @@
 import "./usersList.css";
 function UserCard({ user }: any) {
   const createdAt = new Date(user.createdAt).toLocaleDateString();
-  const postCountClass = user.posts.length > 0 ? "green" : "red"; // Визначаємо клас для кольору
+  const postCountClass = user.posts.length > 0 ? "green" : "red";
 
   return (
     <div className="user-card">
