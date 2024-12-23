@@ -132,7 +132,7 @@ const Registration = () => {
   return (
     <div className="auth-container">
       <div className="form-container">
-        <h2>Registration Page</h2>
+        <h2>Registration</h2>
         <form onSubmit={onSubmit}>
           <TextInput
             type="text"

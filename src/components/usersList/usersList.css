@@ -1,12 +1,14 @@
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  margin-top: 20px;
 
   min-height: 300px;
   background-color: #0d0d24;
   padding: 20px;
   justify-items: center;
+  border-radius: 10px;
 }
 
 .card {

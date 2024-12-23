@@ -1,7 +1,10 @@
 /* Header.css */
 .app-header {
-    background-color: #282c34;
     color: white;
     padding: 10px;
     text-align: center;
+
+    position: fixed;
+    width: 100%;
+    backdrop-filter: blur(10px);
 }

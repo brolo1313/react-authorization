@@ -167,7 +167,7 @@ const Login = () => {
       />
 
       <div className={`form-container ${isLoading ? "loading" : ""}`}>
-        <h2>Login Page</h2>
+        <h2>Login</h2>
 
         <form onSubmit={onSubmit}>
           <TextInput

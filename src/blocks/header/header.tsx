@@ -14,7 +14,7 @@ const Header = () => {
         <header className="app-header">
           <div style={{ display: "flex", justifyContent: "end" }}>
             <div
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", marginRight: "20px" }}
               onClick={logOut}
             >
               <img
