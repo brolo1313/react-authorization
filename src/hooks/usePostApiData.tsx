@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useLoader } from "../context/loaderContext";
 import { fetchInterceptor } from "../interceptor/interceptor";
+import useLogout from "./useLogout";
 
 type HttpMethod = "POST" | "PUT" | "DELETE";
 
@@ -8,8 +9,14 @@ export function usePostApiData<T>(apiEndpoint: string, method: HttpMethod) {
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<Error | null>(null);
   const { showLoader, hideLoader } = useLoader();
+  const { logOut } = useLogout();
 
-  const authPath = ["sign-in", "reset-password", "sign-up", "auth/google/callback"];
+  const authPath = [
+    "sign-in",
+    "reset-password",
+    "sign-up",
+    "auth/google/callback",
+  ];
 
   const triggerFetch = useCallback(
     async (data?: T) => {
@@ -17,7 +24,12 @@ export function usePostApiData<T>(apiEndpoint: string, method: HttpMethod) {
         showLoader();
       }
       try {
-        const response = await fetchInterceptor(apiEndpoint, method, data);
+        const response = await fetchInterceptor(
+          apiEndpoint,
+          method,
+          data,
+          logOut
+        );
 
         setData(response);
       } catch (err: any) {

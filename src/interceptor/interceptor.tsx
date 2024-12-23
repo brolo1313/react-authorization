@@ -6,7 +6,8 @@ import { httpErrorHandler } from "../shared/helpers/basicCodeErrorHandler";
 export async function fetchInterceptor(
   apiEndpoint: string,
   method: string = "GET",
-  body: any = null
+  body: any = null,
+  logOut?: Function
 ) {
   const userSettings = localStorageService.getUserSettings();
   const accessToken = userSettings?.accessToken || null;
@@ -45,10 +46,14 @@ export async function fetchInterceptor(
     ) {
       errorMessage = "The server returned an invalid response format.";
     }
+    if (error.status === 401) {
+      logOut!();
+    }
     ShowToasterError({
       title: error.status ?? "500",
       message: errorMessage ?? error.message,
     });
+
     throw error;
   }
 }

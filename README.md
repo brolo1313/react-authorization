@@ -1,6 +1,4 @@
-# React + TypeScript + Vite
-
-# React Authorization
+# React + TypeScript + Vite Authorization
 
 This project is a React application built with TypeScript and Vite. It provides user authentication and authorization features, including integration with Google OAuth. The application is designed to manage user access and protect routes based on user roles.
 

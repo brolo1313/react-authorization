@@ -1,19 +1,12 @@
 // Header.tsx
 import "./Header.css";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { googleLogout } from "@react-oauth/google";
+import useLogout from "../../hooks/useLogout";
 
 const Header = () => {
-  const { userSettings, clearUserSettings } = useAuth();
-  const navigateToLogin = useNavigate();
+  const { userSettings } = useAuth();
+  const { logOut } = useLogout();
   if (!userSettings) return null;
-
-  const logOut = () => {
-    clearUserSettings();
-    if (userSettings.isSocial) googleLogout();
-    navigateToLogin("/login");
-  };
 
   return (
     <>
