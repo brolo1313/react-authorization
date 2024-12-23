@@ -1,0 +1,42 @@
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-table th,
+  .user-table td {
+    padding: 12px;
+    text-align: left;
+    font-size: 16px;
+  }
+  
+  .user-table thead {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #fff;
+  }
+  
+  .user-table tbody tr {
+    transition: background-color 0.3s ease;
+  }
+  
+  .user-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .user-table td {
+    color: #fff;
+  }
+  
+  .empty-data {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 24px;
+    color: #fff;
+    padding: 20px;
+  }
+  

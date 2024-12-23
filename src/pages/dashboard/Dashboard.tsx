@@ -4,6 +4,7 @@ import "./dashboard.css";
 import { useGetApiData } from "../../hooks/useGetApiData";
 import { useLoader } from "../../context/loaderContext";
 import UserList from "../../components/usersList/UsersList";
+import UsersProfiles from "../../components/usersProfiles/UsersProfiles";
 
 function Dashboard() {
   const [usersLists, setUsersListState] = useState<IUser[]>([]);
@@ -48,6 +49,10 @@ function Dashboard() {
     <section>
       <UserList
         users={usersLists}
+        isLoading={isLoading}
+      />
+      <UsersProfiles
+        users={plansData}
         isLoading={isLoading}
       />
     </section>
