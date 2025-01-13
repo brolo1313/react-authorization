@@ -7,9 +7,9 @@ const Footer = () => {
   return (
     <>
       {userSettings.accessToken ? (
-        <footer className="footer">
-          <div className="footer-container">{/* Footer content */}</div>
-          <div className="footer-bottom">
+        <footer className="app-footer">
+          <div className="app-footer-container">{/* Footer content */}</div>
+          <div className="app-footer-bottom">
             <p>&copy; 2024 Ваша компанія. Всі права захищені.</p>
           </div>
         </footer>
