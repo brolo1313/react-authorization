@@ -42,6 +42,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const neonElements = document.querySelectorAll(
+      ".btn-neon"
+    ) as NodeListOf<HTMLElement>;
+
+    const applyNeonEffect = (
+      neonElement: HTMLElement | null,
+      applyEffect: boolean
+    ) => {
+      if (!neonElement) return;
+      if (applyEffect) {
+        neonElement.style.boxShadow =
+          "0 0 10px #ff6f61, 0 0 40px #ff6f61, 0 0 80px #ff6f61";
+        neonElement.style.backgroundColor = "#ff6f61";
+      } else {
+        neonElement.style.boxShadow = "none";
+        neonElement.style.backgroundColor = "transparent";
+      }
+    };
+
+    const applyEffectToNeons = userSettings?.accessToken ? true : false;
+
+    neonElements.forEach((neonElement, index) => {
+      if (index < 2) {
+        applyNeonEffect(neonElement as HTMLElement, applyEffectToNeons);
+      }
+    });
+  }, [userSettings]);
+
   return (
     <AuthContext.Provider
       value={{ userSettings, updateUserSettings, clearUserSettings }}
