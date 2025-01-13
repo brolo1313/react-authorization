@@ -9,6 +9,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Footer from "./blocks/footer/footers";
 import Neon from "./blocks/neon/neon";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -22,9 +23,10 @@ function App() {
               <Header />
               <AppRoutes />
               <Footer />
-              <Neon className="right-neon"/>
+              <Neon className="right-neon" />
             </div>
           </BrowserRouter>
+          <ToastContainer />
         </LoaderProvider>
       </AuthProvider>
     </GoogleOAuthProvider>

@@ -1,6 +1,6 @@
 .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Динамічна кількість колонок */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Динамічна кількість колонок */
   gap: 20px;
   margin-top: 20px;
   min-height: 300px;
@@ -19,8 +19,7 @@
   background: #333;
   color: white;
   border-radius: 8px;
-  padding: 20px;
-  width: 200px;
+  width: 250px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -38,12 +37,13 @@
 }
 
 .user-card__name {
-  font-size: 18px;
+  font-size: 20px;
   margin: 10px 0;
 }
 
 .user-card__role {
-  font-size: 12px;
+  font-size: 18px;
+  color: orange;
   margin: 5px 0;
 }
 

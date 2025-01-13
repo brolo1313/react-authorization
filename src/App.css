@@ -49,15 +49,9 @@
 
 section {
   scrollbar-width: none;
-  /* margin: 0px 300px 0 300px; */
   overflow: auto;
   padding-top: 100px;
   padding-bottom: 50px;
-  /* max-width: 1200px; */
-  /* margin: 0 auto; */
-  /* min-width: 150px; */
-  /* align-self: center; */
-  /* justify-self: center; */
   padding-left: 200px;
   padding-right: 200px;
 }

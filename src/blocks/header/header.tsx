@@ -2,6 +2,7 @@
 import "./Header.css";
 import { useAuth } from "../../context/AuthContext";
 import useLogout from "../../hooks/useLogout";
+import logoutIcon from "../../assets/icons/logout_icon1.svg";
 
 const Header = () => {
   const { userSettings } = useAuth();
@@ -18,7 +19,7 @@ const Header = () => {
               onClick={logOut}
             >
               <img
-                src="/src/assets/icons/logout_icon1.svg"
+                src={logoutIcon}
                 alt="Logout"
               />
             </div>

@@ -8,7 +8,8 @@ import UsersProfiles from "../../components/usersProfiles/UsersProfiles";
 
 function Dashboard() {
   const [usersLists, setUsersListState] = useState<IUser[]>([]);
-  const [plans, setPlans] = useState<any>(null);
+   // @ts-ignore
+  const [setPlans] = useState<any>(null);
   const { isLoading } = useLoader();
 
   const {
@@ -19,7 +20,9 @@ function Dashboard() {
 
   const {
     data: plansData,
-    error: plansError,
+        // @ts-ignore
+    error: plansError, 
+      // @ts-ignore
     setError: setPlansError,
   } = useGetApiData(`plans`);
 
@@ -34,16 +37,16 @@ function Dashboard() {
     }
   }, [profiles, profilesError]);
 
-  useEffect(() => {
-    if (plansData) {
-      setPlans(plansData);
-      setPlansError(null);
-    }
+  // useEffect(() => {
+  //   if (plansData) {
+  //     setPlans(plansData);
+  //     setPlansError(null);
+  //   }
 
-    if (plansError) {
-      console.error("Error fetching plans:", plansError);
-    }
-  }, [plansData, plansError]);
+  //   if (plansError) {
+  //     console.error("Error fetching plans:", plansError);
+  //   }
+  // }, [plansData, plansError]);
 
   return (
     <section>
