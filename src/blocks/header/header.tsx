@@ -1,5 +1,5 @@
 // Header.tsx
-import "./Header.css";
+import "./header.css";
 import { useAuth } from "../../context/AuthContext";
 import useLogout from "../../hooks/useLogout";
 import logoutIcon from "../../assets/icons/logout_icon1.svg";
