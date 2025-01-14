@@ -65,9 +65,11 @@ const Login = () => {
   }, [googleOAuthData]);
 
   useEffect(() => {
+    console.log("Login Error: ", loginError);
+    console.log("Google OAuth Error: ", googleOAuthError);
+  
     if (loginError || googleOAuthError) {
       optionalSetFormState({ isLoading: false }, setFormState);
-      console.log("Error occurred:", loginError || googleOAuthError);
     }
   }, [loginError, googleOAuthError]);
 

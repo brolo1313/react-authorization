@@ -2,6 +2,7 @@
 import "./Header.css";
 import { useAuth } from "../../context/AuthContext";
 import useLogout from "../../hooks/useLogout";
+import logoutIcon from "../../assets/icons/logout_icon1.svg";
 
 const Header = () => {
   const { userSettings } = useAuth();
@@ -12,14 +13,14 @@ const Header = () => {
     <>
       {userSettings.accessToken ? (
         <header className="app-header">
-          <div style={{ display: "flex", justifyContent: "end" }}>
+          <div className="logout-container">
             <div
-              style={{ cursor: "pointer", marginRight: "20px" }}
+              className="logout-icon"
               onClick={logOut}
             >
               <img
-                src="/src/assets/icons/logout_icon.png"
-                alt=""
+                src={logoutIcon}
+                alt="Logout"
               />
             </div>
           </div>

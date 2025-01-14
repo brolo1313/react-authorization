@@ -1,10 +1,27 @@
 /* Header.css */
 .app-header {
-    color: white;
-    padding: 10px;
-    text-align: center;
+  padding: 10px;
+}
 
-    position: fixed;
-    width: 100%;
-    backdrop-filter: blur(10px);
+.logout-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.logout-icon {
+  display: flex;
+
+  cursor: pointer;
+  margin-right: 20px;
+  transition: box-shadow 0.7s ease;
+}
+
+.logout-icon img {
+  width: 50px;
+  transition: filter 0.3s ease;
+}
+
+.logout-icon img:hover {
+  filter: brightness(0) saturate(100%) invert(31%) sepia(57%) saturate(657%)
+    hue-rotate(351deg) brightness(91%) contrast(100%);
 }

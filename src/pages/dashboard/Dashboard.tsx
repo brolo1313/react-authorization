@@ -8,7 +8,6 @@ import UsersProfiles from "../../components/usersProfiles/UsersProfiles";
 
 function Dashboard() {
   const [usersLists, setUsersListState] = useState<IUser[]>([]);
-  const [plans, setPlans] = useState<any>(null);
   const { isLoading } = useLoader();
 
   const {
@@ -19,7 +18,7 @@ function Dashboard() {
 
   const {
     data: plansData,
-    error: plansError,
+    error: plansError, 
     setError: setPlansError,
   } = useGetApiData(`plans`);
 
@@ -36,7 +35,6 @@ function Dashboard() {
 
   useEffect(() => {
     if (plansData) {
-      setPlans(plansData);
       setPlansError(null);
     }
 

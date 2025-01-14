@@ -8,6 +8,8 @@ import Header from "./blocks/header/header";
 import { AuthProvider } from "./context/AuthContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Footer from "./blocks/footer/footers";
+import Neon from "./blocks/neon/neon";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -16,12 +18,15 @@ function App() {
         <LoaderProvider>
           <BrowserRouter>
             <div className="main">
+              <Neon className="left-neon" />
               <Loader />
               <Header />
               <AppRoutes />
               <Footer />
+              <Neon className="right-neon" />
             </div>
           </BrowserRouter>
+          <ToastContainer />
         </LoaderProvider>
       </AuthProvider>
     </GoogleOAuthProvider>
