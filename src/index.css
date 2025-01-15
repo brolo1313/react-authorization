@@ -53,6 +53,10 @@ h1 {
   line-height: 1.1;
 }
 
+.text-center {
+  text-align: center;
+}
+
 button {
   border-radius: var(--button-border-radius);
   border: 1px solid transparent;

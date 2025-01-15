@@ -67,25 +67,27 @@ section {
 
 .form-container {
   position: relative;
-  width: 100%;
+
+  width: auto;
   max-width: var(--form-width);
-  max-height: var(--form-max-height);
+
   padding: var(--form-padding);
+
   background-color: var(--form-background-color);
   backdrop-filter: blur(10px);
   border: 1px solid var(--border-color);
   border-radius: var(--form-border-radius);
   box-shadow: var(--box-shadow);
-  display: flex;
-  flex-direction: column;
-  gap: var(--form-gap);
+
   overflow: hidden;
-  margin: 0 auto;
+  transition: width 1s ease;
 }
 
 .form-container::before {
   content: "";
   position: absolute;
+  border-top-left-radius: var(--form-border-radius);
+  border-top-right-radius: var(--form-border-radius);
   top: 0;
   left: 0;
   right: 0;
@@ -177,7 +179,13 @@ section {
   }
 
   section {
-    padding-left: 50px !important; 
+    padding-left: 50px !important;
     padding-right: 50px !important;
+  }
+}
+
+@media (min-width: 660px) {
+  .form-container {
+    width: 100%;
   }
 }
