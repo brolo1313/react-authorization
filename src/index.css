@@ -41,10 +41,7 @@ a:hover {
 
 body {
   margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100svh;
   background: url("./assets/image/body_bg1.jpg") center/cover no-repeat;
 }
 

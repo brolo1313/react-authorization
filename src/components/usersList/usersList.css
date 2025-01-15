@@ -5,6 +5,8 @@
   margin-top: 20px;
   min-height: 300px;
   background-color: #0d0d24;
+  padding-bottom: 20px;
+  padding-top: 20px;
   padding: 20px;
   justify-items: center;
   border-radius: 10px;
@@ -19,7 +21,7 @@
   background: #333;
   color: white;
   border-radius: 8px;
-  width: 250px;
+  width: 100%;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

@@ -43,8 +43,7 @@
   width: 100%;
   height: 100svh;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 section {
@@ -52,10 +51,12 @@ section {
   overflow: auto;
   padding-top: 100px;
   padding-bottom: 50px;
-  padding-left: 200px;
-  padding-right: 200px;
+  padding-left: 150px;
+  padding-right: 150px;
 
-  height: 100svh;
+  max-width: 1200px;
+
+  width: 100%;
 }
 
 .auth-container {
