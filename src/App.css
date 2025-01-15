@@ -41,7 +41,7 @@
 
 .main {
   width: 100%;
-  height: 100%;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -54,6 +54,8 @@ section {
   padding-bottom: 50px;
   padding-left: 200px;
   padding-right: 200px;
+
+  height: 100svh;
 }
 
 .auth-container {
@@ -62,7 +64,7 @@ section {
   justify-content: center;
   align-items: center;
   row-gap: 50px;
-  height: 100vh;
+  height: 100svh;
 }
 
 .form-container {
